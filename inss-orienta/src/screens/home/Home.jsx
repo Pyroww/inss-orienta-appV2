@@ -142,7 +142,7 @@ export default function Home({ theme, setActiveTab }) {
           {/* MÓDULO ADMINISTRADOR INVISÍVEL PARA O CIDADÃO */}
           {adminLogado && (
             <div className="admin-painel-noticias">
-              <h3><FaPlus /> Novo Comunicado</h3>
+              <h3><FaPlus /> Novo Comunicadoo</h3>
               <form onSubmit={lidarEnviarNoticia} className="admin-form-upload">
                 <input 
                   type="text" 
