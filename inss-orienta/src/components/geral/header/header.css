@@ -1,211 +1,422 @@
-/* =========================================
-   MENU LATERAL (GAVETA 100% NATIVA)
-   ========================================= */
+/* =========================================================
+   HEADER E MENU LATERAL — INSS ORIENTA
+   ========================================================= */
 
-/* 1. O FUNDO FANTASMA (Cobre a Home, o Rodapé e o Cabeçalho) */
-.menu-overlay {
-  position: fixed; /* Trocado de 'absolute' para 'fixed'! Agora ele ancora no vidro da tela */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px); /* O famoso efeito "Vidro Fosco" do iOS */
-  z-index: 9998; /* Fica acima do rodapé (1000), mas um milímetro abaixo da gaveta */
-  
-  /* Exorcismo do highlight azul no overlay */
-  -webkit-tap-highlight-color: transparent;
-  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* Compatibilidade temporária com o index.css antigo. Quando o AppShell
+   for reformulado, esta regra poderá ser movida para o CSS global. */
+.app-container {
+  padding-top: 0;
 }
 
-/* 2. A GAVETA (Física de Aceleração por Hardware) */
-.menu-lateral {
+.skip-link {
   position: fixed;
+  top: 8px;
+  left: 50%;
+  z-index: 10001;
+  padding: 12px 16px;
+  border: 3px solid #ffffff;
+  border-radius: 10px;
+  background: #0b3d60;
+  color: #ffffff;
+  font-weight: 800;
+  text-decoration: none;
+  transform: translate(-50%, -160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+.app-header {
+  position: sticky;
   top: 0;
-  left: 0; 
-  width: 280px; /* Alargado ligeiramente para os botões respirarem */
-  height: 100vh;
-  background-color: var(--card-bg); 
-  box-shadow: 12px 0 30px rgba(0, 0, 0, 0.4); /* Sombra mais imponente e difusa */
-  z-index: 9999;
+  left: auto;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: var(--header-bg, var(--inss-blue, #0b3d60));
+  color: var(--header-text, #ffffff);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.menu-button,
+.btn-fechar,
+.header-brand,
+.menu-link,
+.btn-voltar {
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-button,
+.btn-fechar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.menu-button svg,
+.btn-fechar svg {
+  width: 23px;
+  height: 23px;
+}
+
+.header-brand {
   display: flex;
   flex-direction: column;
-
-  /* O SEGREDO DA FLUIDEZ: Animar GPU, nunca CPU */
-  transform: translateX(-100%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); 
-  will-change: transform; /* Avisa a placa de vídeo com antecedência: "Prepare a decolagem" */
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 48px;
+  padding: 3px 10px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
 }
 
-/* Quando o React bota a classe .aberto, a gaveta corre para a coordenada zero */
-.menu-lateral.aberto {
-  transform: translateX(0);
+.header-brand-name {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 1.0625rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.025em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Cabeçalho da Gaveta */
+.header-brand-description {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  opacity: 0.9;
+}
+
+.header-balance {
+  width: 48px;
+  height: 48px;
+}
+
+.menu-button:focus-visible,
+.btn-fechar:focus-visible,
+.header-brand:focus-visible,
+.menu-link:focus-visible,
+.btn-voltar:focus-visible,
+.skip-link:focus-visible {
+  outline: 3px solid var(--focus-color, #ffdf00);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   DIÁLOGO LATERAL
+   O elemento dialog aberto como modal deixa o restante da página inerte.
+   ========================================================= */
+
+.menu-lateral {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: min(88vw, 22rem);
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-right: 1px solid var(--border-color, #d7dde2);
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #25323a);
+  box-shadow: 12px 0 32px rgba(0, 0, 0, 0.32);
+}
+
+.menu-lateral[open] {
+  display: block;
+  animation: menu-entrando 220ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+.menu-lateral::backdrop {
+  background: rgba(10, 20, 26, 0.66);
+  animation: fundo-entrando 180ms ease-out both;
+}
+
+.menu-lateral-estrutura {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
 .menu-lateral-header {
   display: flex;
-  justify-content: space-between;
+  flex: 0 0 auto;
   align-items: center;
-  padding: 10px 10px;
-  background-color: var(--inss-blue);
-  color: white;
-  border-bottom: var(--menu-header-border);
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 76px;
+  padding: max(12px, env(safe-area-inset-top)) 12px 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: var(--header-bg, var(--inss-blue, #0b3d60));
+  color: var(--header-text, #ffffff);
 }
 
 .menu-lateral-header h2 {
   margin: 0;
   font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-weight: 900;
+  line-height: 1.25;
 }
 
-/* Botão de Fechar (O "X") */
-.btn-fechar {
-  background: none;
-  border: none;
-  color: var(--menu-close-btn);
-  cursor: pointer;
-  padding: 8px;
-  margin-right: -8px; /* Compensa o padding para encostar na margem direita */
-  border-radius: 50%;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+.menu-lateral-header p {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  opacity: 0.92;
 }
 
-/* Quando o polegar afunda no "X" */
-.btn-fechar:active {
-  transform: rotate(-90deg) scale(0.85); /* Dá um giro dramático e encolhe */
-  background-color: rgba(255, 255, 255, 0.15);
+.menu-lateral-conteudo {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+  padding: 14px 16px max(18px, env(safe-area-inset-bottom));
 }
 
-/* Área de links rolável */
 .menu-lateral-links {
   display: flex;
   flex-direction: column;
-  gap: 14px; 
-  padding: 24px 20px;
-  overflow-y: auto; 
-  overscroll-behavior-y: contain; /* Se o menu tiver muitos links, a rolagem morre aqui dentro */
+  gap: 8px;
 }
 
-/* 3. OS BOTÕES DA GAVETA (Padrão Google Super Apps) */
+.menu-grupo-titulo {
+  margin: 2px 4px 4px;
+  color: var(--title-color, #0b3d60);
+  font-size: 0.875rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.menu-grupo-titulo-separado {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color, #d7dde2);
+}
+
 .menu-link {
+  position: relative;
   display: flex;
   align-items: center;
+  gap: 14px;
   width: 100%;
-  padding: 16px 20px; 
-  background-color: var(--card-bgType2); 
-  border: 2px solid var(--border-color); 
-  border-radius: 14px; 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); 
-  
-  font-size: 1.1rem; 
-  font-weight: 600;
-  color: var(--text-color); 
-  text-align: left; 
+  min-height: 56px;
+  padding: 11px 14px;
+  border: 2px solid var(--border-color, #d7dde2);
+  border-radius: 12px;
+  background: var(--card-bg-type-2, var(--card-bgType2, #ffffff));
+  color: var(--text-color, #25323a);
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.35;
+  text-align: left;
   cursor: pointer;
-
-  /* Blindagem Tátil */
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  box-sizing: border-box;
-
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 120ms ease;
 }
 
 .menu-link-icone {
-  font-size: 24px; 
-  color: var(--menu-icon-color); 
-  margin-right: 16px; 
-  flex-shrink: 0; 
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  color: var(--menu-icon-color, #0b3d60);
 }
 
-/* A GRAVIDADE DO BOTÃO DA GAVETA */
+.menu-link-atual {
+  border-color: var(--menu-active-border, #0b3d60);
+  background: var(--menu-active-bg, #e8f2f8);
+  box-shadow: inset 4px 0 0 var(--menu-active-border, #0b3d60);
+}
+
 .menu-link:active {
-  background-color: var(--bg-color);
-  border-color: var(--inss-blue); /* A borda acende na cor do INSS instantaneamente */
-  transform: scale(0.96); 
-  box-shadow: 0 0 0 rgba(0,0,0,0);
+  transform: scale(0.98);
 }
 
-/* O MICRO-DETALHE PSICOLÓGICO: O ícone dá um mini "empurrãozinho" para a direita */
-.menu-link:active .menu-link-icone {
-  transform: scale(1.15) translateX(3px);
-  color: var(--inss-blue);
+.menu-aviso {
+  margin-top: 22px;
+  padding: 14px;
+  border: 1px solid var(--border-color, #d7dde2);
+  border-radius: 12px;
+  background: var(--bg-color, #f6f8f9);
+  color: var(--text-color, #25323a);
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
-.placeholder-link {
-  opacity: 0.5;
-  border-style: dashed; 
-  cursor: not-allowed;
+.menu-aviso strong {
+  display: block;
+  margin-bottom: 2px;
 }
 
-@keyframes fadeIn {
+/* =========================================================
+   BOTÃO VOLTAR USADO NAS TELAS INTERNAS
+   ========================================================= */
+
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 120ms ease;
+}
+
+.btn-voltar:active {
+  transform: translateX(-2px) scale(0.96);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* =========================================================
+   ESTADOS VISUAIS E PREFERÊNCIAS DO USUÁRIO
+   ========================================================= */
+
+.app-container.dark .menu-link-atual {
+  background: #243b4a;
+}
+
+.app-container.dark .menu-aviso {
+  background: #171d21;
+}
+
+.app-container.high-contrast .app-header,
+.app-container.high-contrast .menu-lateral-header {
+  border-color: #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .menu-lateral,
+.app-container.high-contrast .menu-link,
+.app-container.high-contrast .menu-aviso,
+.app-container.high-contrast .menu-grupo-titulo-separado {
+  border-color: #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .menu-link-atual {
+  border-color: #ffffff;
+  background: #000000;
+  color: #ffffff;
+  box-shadow: inset 5px 0 0 #ffffff;
+}
+
+.app-container.high-contrast .menu-link-icone,
+.app-container.high-contrast .menu-grupo-titulo {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .menu-lateral::backdrop {
+  background: rgba(0, 0, 0, 0.86);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .menu-button:hover,
+  .btn-fechar:hover,
+  .header-brand:hover,
+  .btn-voltar:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .menu-link:hover {
+    border-color: var(--menu-active-border, #0b3d60);
+    background: var(--menu-active-bg, #eef6fa);
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .menu-lateral {
+    width: 92vw;
+  }
+
+  .header-brand-description {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link,
+  .menu-button,
+  .btn-fechar,
+  .header-brand,
+  .menu-link,
+  .btn-voltar,
+  .menu-lateral[open],
+  .menu-lateral::backdrop {
+    scroll-behavior: auto;
+    transition: none;
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .app-header,
+  .menu-lateral,
+  .menu-lateral-header,
+  .menu-link,
+  .menu-aviso {
+    border: 1px solid CanvasText;
+  }
+
+  .menu-link-atual {
+    border-width: 3px;
+  }
+}
+
+@keyframes menu-entrando {
+  from {
+    opacity: 0.7;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fundo-entrando {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
-
-
-/* =========================================
-   BOTÃO VOLTAR (EFEITO "PUXÃO MAGNÉTICO")
-   ========================================= */
-
-.btn-voltar {
-  background: transparent;
-  border: none;
-  color: inherit; /* Puxa automaticamente a cor branca ou escura do cabeçalho */
-  cursor: pointer;
-  
-  /* 1. O SEGREDO DE UX MOBILE (Hitbox de Polegar): */
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.15rem;
-
-  /* Exorcismo do quadrado azul nativo */
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  outline: none;
-  margin-left: -6px; /* Compensa o tamanho da bolinha para a seta continuar alinhada à margem */
-
-  /* Curva de desaceleração dramática da Apple */
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
-}
-
-/* O MILISSEGUNDO DO TOQUE: */
-.btn-voltar:active {
-  /* A mágica cognitiva: ela encolhe E dá um salto de 5 pixels para a esquerda */
-  transform: translateX(-5px) scale(0.82);
-  
-  /* Cria uma "lanterna" de clique atrás da seta (Padrão Android Material You) */
-  background-color: rgba(255, 255, 255, 0.18); 
-}
-
-/*
-.interno-header {
-  display: flex;
-  align-items: center;
-  background-color: var(--inss-blue);
-  color: white;
-  padding: 15px;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-
-
-.interno-header h2 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 500;
-}
-
-*/

@@ -1,153 +1,560 @@
-/*----------------------------------------------------------------------*/
-/*-------------------------- TELA DE ACESSIBILIDADEe --------------------*/
-/*----------------------------------------------------------------------*/
+/* =========================================================
+   ACESSIBILIDADE — INSS ORIENTA
+   ========================================================= */
 
 .acessibilidade-screen {
-  padding: 10px;
-}
-
-.screen-title {
-  font-size: 22px;
-  color: var(--inss-blue);
-  margin-top: 0;
-  margin-bottom: 5px;
-}
-
-/* No alto contraste e modo escuro o título precisa mudar */
-.app-container.dark .screen-title,
-.app-container.high-contrast .screen-title {
+  --access-accent: #0b3d60;
+  --access-hero-bg: #eaf3f8;
+  --access-selected: #0b6b3a;
+  --access-selected-bg: #edf8f2;
+  --access-status-bg: #f1f8f4;
+  --access-note-bg: #f4f7f9;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2px 0 12px;
   color: var(--text-color);
 }
 
-.screen-desc {
-  font-size: 14px;
-  margin-bottom: 25px;
-  color: var(--text-color);
-  opacity: 0.9;
+.accessibility-hero {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 13px;
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--access-hero-bg);
 }
 
-.theme-options {
+.accessibility-hero-icon,
+.accessibility-legend-icon,
+.accessibility-theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--access-accent);
+}
+
+.accessibility-hero-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--card-bg);
+  box-shadow: 0 3px 10px rgba(11, 61, 96, 0.12);
+}
+
+.accessibility-hero-icon svg {
+  width: 29px;
+  height: 29px;
+}
+
+.accessibility-eyebrow {
+  margin: 0 0 4px;
+  color: var(--access-accent);
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.accessibility-title {
+  margin: 0;
+  color: var(--access-accent);
+  font-size: clamp(1.45rem, 6vw, 1.8rem);
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.accessibility-description {
+  margin: 7px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.accessibility-current-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 12px 13px;
+  border-left: 4px solid var(--access-selected);
+  border-radius: 10px;
+  background: var(--access-status-bg);
+  color: var(--text-color);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.accessibility-current-status > svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--access-selected);
+}
+
+.accessibility-current-status strong {
+  font-weight: 900;
+}
+
+.accessibility-fieldset {
+  min-width: 0;
+  margin: 25px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.accessibility-legend {
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 0;
+  color: var(--text-color);
+}
+
+.accessibility-legend-content {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.accessibility-legend-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--access-hero-bg);
+}
+
+.accessibility-legend-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.accessibility-legend strong,
+.accessibility-legend small {
+  display: block;
+}
+
+.accessibility-legend strong {
+  color: var(--access-accent);
+  font-size: 1.0625rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.accessibility-legend small {
+  margin-top: 2px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  opacity: 0.82;
+}
+
+.accessibility-size-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.accessibility-theme-options {
+  display: grid;
+  gap: 11px;
+}
+
+.accessibility-size-option,
+.accessibility-theme-option,
+.accessibility-reset-button {
+  border: 2px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.accessibility-size-option,
+.accessibility-theme-option {
+  position: relative;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(11, 61, 96, 0.08);
+  transition: border-color 160ms ease, background-color 160ms ease,
+    box-shadow 160ms ease, transform 120ms ease;
+}
+
+.accessibility-size-option {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: flex-start;
+  min-height: 120px;
+  padding: 15px 42px 14px 15px;
 }
 
-.theme-card {
-  background-color: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
+.accessibility-theme-option {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 28px;
   align-items: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: left;
-  color: var(--text-color);
+  gap: 12px;
+  width: 100%;
+  min-height: 82px;
+  padding: 13px 14px;
 }
 
-.theme-card:active {
+.accessibility-size-option.is-selected,
+.accessibility-theme-option.is-selected {
+  border-color: var(--access-selected);
+  background: var(--access-selected-bg);
+  box-shadow: 0 0 0 1px var(--access-selected), 0 4px 12px rgba(11, 107, 58, 0.14);
+}
+
+.accessibility-size-option:active,
+.accessibility-theme-option:active,
+.accessibility-reset-button:active {
   transform: scale(0.98);
 }
 
-.theme-card.active-theme {
-  border-color: #27ae60; /* Contorno verde de selecionado */
-  box-shadow: 0 0 10px rgba(39, 174, 96, 0.2);
+.accessibility-size-option:focus-visible,
+.accessibility-theme-option:focus-visible,
+.accessibility-reset-button:focus-visible {
+  outline: 3px solid var(--focus-color, #0b3d60);
+  outline-offset: 3px;
 }
 
-.app-container.high-contrast .theme-card.active-theme {
-  border-color: #ffff00;
-  box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-}
-
-.theme-icon {
-  font-size: 30px;
-  margin-right: 20px;
-}
-
-.theme-text h3 {
-  margin: 0 0 5px 0;
-  font-size: 16px;
-}
-
-.theme-text p {
-  margin: 0;
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-/* Suavidade na transição de telas */
-.animate-fade {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-
-/* =========================================
-   ESTILOS DOS BOTÕES DE TAMANHO
-   ========================================= */
-.section-subtitle {
-  font-size: 16px;
-  color: var(--inss-blue);
-  margin-top: 25px;
-  margin-bottom: 15px;
-  display: flex;
+.accessibility-font-sample {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  min-height: 35px;
+  margin-bottom: 7px;
+  color: var(--access-accent);
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
 }
 
-.app-container.dark .section-subtitle,
-.app-container.high-contrast .section-subtitle {
+.accessibility-font-sample.is-large {
+  font-size: 1.8rem;
+}
+
+.accessibility-option-copy {
+  min-width: 0;
+}
+
+.accessibility-option-copy strong,
+.accessibility-option-copy small {
+  display: block;
+}
+
+.accessibility-option-copy strong {
   color: var(--text-color);
+  font-size: 0.9375rem;
+  font-weight: 900;
+  line-height: 1.3;
 }
 
-.size-buttons {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
+.accessibility-option-copy small {
+  margin-top: 3px;
+  color: var(--text-color);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  opacity: 0.82;
 }
 
-.size-btn {
-  flex: 1;
-  padding: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 12px;
+.accessibility-theme-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--access-hero-bg);
+}
+
+.accessibility-theme-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.accessibility-choice-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
   border: 2px solid var(--border-color);
-  background-color: var(--card-bg);
-  color: var(--text-color);
+  border-radius: 50%;
+  background: var(--card-bg);
+  color: #ffffff;
+}
+
+.accessibility-size-option > .accessibility-choice-state {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.is-selected > .accessibility-choice-state {
+  border-color: var(--access-selected);
+  background: var(--access-selected);
+}
+
+.accessibility-choice-state svg {
+  width: 13px;
+  height: 13px;
+}
+
+.accessibility-reset-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 54px;
+  margin-top: 25px;
+  padding: 12px 16px;
+  border-color: var(--access-accent);
+  border-radius: 14px;
+  color: var(--access-accent);
+  font-size: 0.9375rem;
+  font-weight: 900;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 160ms ease, transform 120ms ease;
 }
 
-.size-btn:active {
-  transform: scale(0.95);
+.accessibility-reset-button svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
 }
 
-.size-btn.active-size {
-  border-color: #27ae60;
-  background-color: rgba(39, 174, 96, 0.1);
+.accessibility-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 13px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--access-note-bg);
+  color: var(--text-color);
 }
 
-.app-container.high-contrast .size-btn.active-size {
+.accessibility-tip > svg {
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  margin-top: 2px;
+  color: var(--access-accent);
+}
+
+.accessibility-tip p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.acessibilidade-screen.animate-fade {
+  animation: accessibility-fade-in 220ms ease-out both;
+}
+
+/* =========================================================
+   TEMA ESCURO
+   ========================================================= */
+
+.app-container.dark .acessibilidade-screen {
+  --access-accent: #80c9f6;
+  --access-hero-bg: #192a33;
+  --access-selected: #69e3a2;
+  --access-selected-bg: #173326;
+  --access-status-bg: #162c22;
+  --access-note-bg: #1a242a;
+}
+
+/* =========================================================
+   ALTO CONTRASTE
+   ========================================================= */
+
+.app-container.high-contrast .acessibilidade-screen {
+  --access-accent: #ffff00;
+  --access-hero-bg: #000000;
+  --access-selected: #ffff00;
+  --access-selected-bg: #000000;
+  --access-status-bg: #000000;
+  --access-note-bg: #000000;
+}
+
+.app-container.high-contrast .accessibility-hero,
+.app-container.high-contrast .accessibility-current-status,
+.app-container.high-contrast .accessibility-size-option,
+.app-container.high-contrast .accessibility-theme-option,
+.app-container.high-contrast .accessibility-reset-button,
+.app-container.high-contrast .accessibility-tip {
   border-color: #ffff00;
-  background-color: rgba(255, 255, 0, 0.2);
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
 }
 
-/* =========================================
-   CLASSE ATIVADORA DO TAMANHO GRANDE (A+)
-   Isso aumenta todos os textos e ícones do app
-   ========================================= */
-.app-container.font-grande .service-btn span { font-size: 14px; } /* Texto da grade */
-.app-container.font-grande .service-icon { font-size: 56px; } /* Ícones da grade */
-.app-container.font-grande .news-content h3 { font-size: 16px; line-height: 1.5; } /* Título da notícia */
-.app-container.font-grande .news-content p { font-size: 13px; } /* Texto da notícia */
-.app-container.font-grande .screen-title { font-size: 26px; } /* Títulos das abas */
-.app-container.font-grande .screen-desc { font-size: 17px; } /* Descrições */
-.app-container.font-grande .theme-text h3 { font-size: 20px; } /* Textos dos cards */
-.app-container.font-grande .theme-text p { font-size: 15px; } 
-.app-container.font-grande .nav-item span { font-size: 15px; } /* Texto do rodapé */
-.app-container.font-grande .header-title { font-size: 22px; } /* Cabeçalho */
+.app-container.high-contrast .accessibility-size-option.is-selected,
+.app-container.high-contrast .accessibility-theme-option.is-selected {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #ffff00;
+}
+
+.app-container.high-contrast .accessibility-option-copy strong,
+.app-container.high-contrast .accessibility-option-copy small,
+.app-container.high-contrast .accessibility-description,
+.app-container.high-contrast .accessibility-legend,
+.app-container.high-contrast .accessibility-tip p {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .accessibility-hero-icon,
+.app-container.high-contrast .accessibility-legend-icon,
+.app-container.high-contrast .accessibility-theme-icon,
+.app-container.high-contrast .accessibility-choice-state {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .is-selected > .accessibility-choice-state {
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .accessibility-reset-button {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.app-container.high-contrast .accessibility-size-option:focus-visible,
+.app-container.high-contrast .accessibility-theme-option:focus-visible,
+.app-container.high-contrast .accessibility-reset-button:focus-visible {
+  outline-color: #ffffff;
+}
+
+/* =========================================================
+   TEXTO GRANDE, TELAS PEQUENAS E PREFERÊNCIAS DO SISTEMA
+   ========================================================= */
+
+.app-container.font-grande .accessibility-title {
+  font-size: 1.85rem;
+}
+
+.app-container.font-grande .accessibility-description,
+.app-container.font-grande .accessibility-current-status {
+  font-size: 1rem;
+}
+
+.app-container.font-grande .accessibility-size-options {
+  grid-template-columns: 1fr;
+}
+
+.app-container.font-grande .accessibility-option-copy strong,
+.app-container.font-grande .accessibility-reset-button {
+  font-size: 1.0625rem;
+}
+
+.app-container.font-grande .accessibility-option-copy small,
+.app-container.font-grande .accessibility-tip p {
+  font-size: 0.9375rem;
+}
+
+/* Compatibilidade temporária com telas antigas ainda não reformuladas. */
+.app-container.font-grande .screen-title {
+  font-size: 1.625rem;
+}
+
+.app-container.font-grande .screen-desc {
+  font-size: 1.0625rem;
+}
+
+@media (max-width: 22.5rem) {
+  .accessibility-hero {
+    grid-template-columns: 44px minmax(0, 1fr);
+    padding: 15px;
+  }
+
+  .accessibility-hero-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+
+  .accessibility-hero-icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .accessibility-size-options {
+    grid-template-columns: 1fr;
+  }
+
+  .accessibility-theme-option {
+    grid-template-columns: 44px minmax(0, 1fr) 26px;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .accessibility-theme-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .accessibility-size-option:hover,
+  .accessibility-theme-option:hover {
+    border-color: var(--access-accent);
+  }
+
+  .accessibility-reset-button:hover {
+    background: var(--access-hero-bg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acessibilidade-screen.animate-fade,
+  .accessibility-size-option,
+  .accessibility-theme-option,
+  .accessibility-reset-button {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .accessibility-hero,
+  .accessibility-current-status,
+  .accessibility-size-option,
+  .accessibility-theme-option,
+  .accessibility-reset-button,
+  .accessibility-tip {
+    border: 2px solid ButtonText;
+  }
+
+  .accessibility-size-option.is-selected,
+  .accessibility-theme-option.is-selected {
+    border: 3px solid Highlight;
+  }
+
+  .is-selected > .accessibility-choice-state {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+@keyframes accessibility-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

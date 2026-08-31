@@ -137,38 +137,9 @@ img, video, iframe {
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
   padding-top: 60px;    /* Altura exata do .app-header */
-  padding-bottom: 120px; /* Espaço para o rodapé fixo */
 }
 
 /* CABEÇALHO SUPERIOR */
-.app-header {
-  background-color: var(--inss-blue);
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  /*height: 60px; */
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.menu-button {
-  background: none;
-  border: none;
-  color: white;
-  margin-right: 15px;
-  cursor: pointer;
-}
-
-.header-title {
-  font-size: 18px;
-  font-weight: 500;
-  margin: 0;
-}
 
 /* ÁREA CENTRAL ROLÁVEL */
 /* CORREÇÃO 4: .main-content NÃO deve ter overflow-y: auto

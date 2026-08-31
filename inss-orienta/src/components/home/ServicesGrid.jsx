@@ -1,66 +1,145 @@
-import React from 'react';
-import './servicegrid.css'; 
-
-// Importando a fina flor do design moderno: Ionicons 5 (Traços finos e nativos de celular)
-import { 
-  IoShieldCheckmarkOutline, 
-  IoKeyOutline, 
-  IoFingerPrintOutline, // A nova digital biométrica!
-  IoCalendarClearOutline, 
-  IoTimeOutline, 
-  IoDocumentTextOutline 
+import { FaChevronRight } from 'react-icons/fa';
+import {
+  IoCalendarClearOutline,
+  IoDocumentTextOutline,
+  IoFingerPrintOutline,
+  IoKeyOutline,
+  IoShieldCheckmarkOutline,
+  IoTimeOutline,
 } from 'react-icons/io5';
+import './servicegrid.css';
+
+const SERVICOS = [
+  {
+    tela: 'elegibilidade',
+    titulo: 'Benefícios e aposentadoria',
+    descricao: 'Conheça opções e veja quem pode ter direito.',
+    termos: 'benefício beneficios aposentadoria elegibilidade direito auxílio auxilio bpc',
+    Icone: IoShieldCheckmarkOutline,
+    variante: 'verde',
+  },
+  {
+    tela: 'calendario',
+    titulo: 'Calendário de pagamentos',
+    descricao: 'Consulte as datas pelo final do benefício.',
+    termos: 'calendário calendario pagamento data receber benefício dinheiro',
+    Icone: IoCalendarClearOutline,
+    variante: 'dourado',
+  },
+  {
+    tela: 'senhaGov',
+    titulo: 'Recuperar senha gov.br',
+    descricao: 'Veja formas de recuperar o acesso ao Meu INSS.',
+    termos: 'recuperar senha gov govbr acesso entrar meu inss bloqueada esqueci',
+    Icone: IoKeyOutline,
+    variante: 'azul',
+  },
+  {
+    tela: 'provaVida',
+    titulo: 'Prova de vida',
+    descricao: 'Entenda quando e como fazer a comprovação.',
+    termos: 'prova vida biometria facial comprovação comprovacao',
+    Icone: IoFingerPrintOutline,
+    variante: 'verde',
+  },
+  {
+    tela: 'agendamento',
+    titulo: 'Agendar atendimento',
+    descricao: 'Veja como agendar pelos canais oficiais.',
+    termos: 'agendar atendimento agência agencia horário horario marcar visita 135',
+    Icone: IoTimeOutline,
+    variante: 'azul',
+  },
+  {
+    tela: 'documentos',
+    titulo: 'Documentos necessários',
+    descricao: 'Prepare os documentos mais utilizados.',
+    termos: 'documentos documento identidade cpf carteira comprovante cnis',
+    Icone: IoDocumentTextOutline,
+    variante: 'verde',
+  },
+];
+
+const normalizarTexto = (valor = '') => valor
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLocaleLowerCase('pt-BR')
+  .trim();
 
 export default function ServicesGrid({ textoPesquisa, setActiveTab }) {
-  
-  // Nossa Base de Dados com os novos ícones e os "gatilhos de vida" (animações)
-  const listaServicos = [
-    { titulo: "VERIFICAR ELEGIBILIDADE", icone: IoShieldCheckmarkOutline, corClasse: "glow-green", anim: "anim-aura" },
-    { titulo: "RECUPERAR SENHA", icone: IoKeyOutline, corClasse: "glow-blue", anim: "anim-chave" },
-    { titulo: "PROVA DE VIDA", icone: IoFingerPrintOutline, corClasse: "glow-green", anim: "anim-pulso-bio" },
-    { titulo: "CALENDÁRIO DE PAGAMENTO", icone: IoCalendarClearOutline, corClasse: "glow-gold", anim: "anim-flutuar" },
-    { titulo: "AGENDAR ATENDIMENTO", icone: IoTimeOutline, corClasse: "glow-blue", anim: "anim-relogio" },
-    { titulo: "DOCUMENTOS", icone: IoDocumentTextOutline, corClasse: "glow-green", anim: "anim-flutuar" },
-  ];
+  const pesquisaNormalizada = normalizarTexto(textoPesquisa);
+  const servicosFiltrados = SERVICOS.filter((servico) => {
+    if (!pesquisaNormalizada) return true;
+    const conteudoPesquisavel = normalizarTexto(
+      `${servico.titulo} ${servico.descricao} ${servico.termos}`,
+    );
+    return conteudoPesquisavel.includes(pesquisaNormalizada);
+  });
 
-  const servicosFiltrados = listaServicos.filter((servico) => 
-    servico.titulo.toLowerCase().includes(textoPesquisa.toLowerCase())
-  );
+  const navegarPara = (tela) => {
+    setActiveTab(tela);
+
+    window.requestAnimationFrame(() => {
+      const conteudoPrincipal = document.getElementById('conteudo-principal');
+      const container = document.querySelector('.app-container');
+
+      if (container instanceof HTMLElement) {
+        container.scrollTo({ top: 0, behavior: 'auto' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+
+      conteudoPrincipal?.focus({ preventScroll: true });
+    });
+  };
+
+  const quantidade = servicosFiltrados.length;
+  const mensagemQuantidade = pesquisaNormalizada
+    ? `${quantidade} ${quantidade === 1 ? 'resultado encontrado' : 'resultados encontrados'}.`
+    : `${quantidade} opções disponíveis.`;
 
   return (
-    <div className="services-grid">
-      
-      {servicosFiltrados.length === 0 && (
-        <p className="vazio-aviso">
-          Nenhum serviço encontrado para "{textoPesquisa}".
+    <section className="home-services" aria-labelledby="titulo-servicos-home">
+      <div className="home-services-heading">
+        <div>
+          <p className="services-kicker">Acesso rápido</p>
+          <h2 id="titulo-servicos-home">
+            {pesquisaNormalizada ? 'Resultados da pesquisa' : 'Serviços mais procurados'}
+          </h2>
+        </div>
+        <p className="services-count" role="status" aria-live="polite">
+          {mensagemQuantidade}
         </p>
-      )}
+      </div>
 
-      {servicosFiltrados.map((servico, index) => {
-        const IconeDoServico = servico.icone;
-        return (
-          <button 
-            key={index} 
-            className="service-btn"
-            onClick={() => {
-              if (servico.titulo === "VERIFICAR ELEGIBILIDADE") setActiveTab('elegibilidade');
-              else if (servico.titulo === "RECUPERAR SENHA") setActiveTab('senhaGov');
-              else if (servico.titulo === "PROVA DE VIDA") setActiveTab('provaVida');
-              else if (servico.titulo === "CALENDÁRIO DE PAGAMENTO") setActiveTab('calendario');
-              else if (servico.titulo === "AGENDAR ATENDIMENTO") setActiveTab('agendamento');
-              else if (servico.titulo === "DOCUMENTOS") setActiveTab('documentos');
-            }}
+      <div id="lista-servicos-home" className="services-grid">
+        {servicosFiltrados.map(({ tela, titulo, descricao, Icone, variante }) => (
+          <button
+            key={tela}
+            type="button"
+            className="service-card"
+            onClick={() => navegarPara(tela)}
           >
-            {/* A "Caixa de Luz" que guarda o ícone */}
-            <div className={`caixa-icone ${servico.corClasse} ${servico.anim}`}>
-              <IconeDoServico className="service-icon" />
-            </div>
-            
-            <span>{servico.titulo.replace(" DE", "\nDE").replace(" ", "\n")}</span>
-          </button>
-        );
-      })}
+            <span className={`service-card-icon service-card-icon-${variante}`} aria-hidden="true">
+              <Icone focusable="false" />
+            </span>
 
-    </div>
+            <span className="service-card-text">
+              <span className="service-card-title">{titulo}</span>
+              <span className="service-card-description">{descricao}</span>
+            </span>
+
+            <FaChevronRight className="service-card-arrow" aria-hidden="true" focusable="false" />
+          </button>
+        ))}
+
+        {quantidade === 0 && (
+          <div className="services-empty" role="status">
+            <strong>Nenhum serviço encontrado.</strong>
+            <span>Tente uma palavra mais simples, como “senha”, “pagamento” ou “documentos”.</span>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

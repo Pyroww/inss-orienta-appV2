@@ -1,102 +1,211 @@
-/* NAVEGAÇÃO INFERIOR */
+/* =========================================================
+   NAVEGAÇÃO INFERIOR — INSS ORIENTA
+   ========================================================= */
+
+/* A altura é atualizada pelo ResizeObserver do BottomNav. Dessa forma,
+   textos ampliados e a área segura do aparelho nunca cobrem o conteúdo. */
+.app-container {
+  padding-bottom: calc(var(--bottom-nav-height, 76px) + 16px);
+}
+
 .bottom-nav {
   position: fixed;
+  right: 0;
   bottom: 0;
   left: 0;
+  z-index: 900;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 8rem));
+  justify-content: center;
+  gap: 4px;
   width: 100%;
-  /* CORRIGIDO: altura mínima em vez de altura fixa.
-     Com height: 60px + padding-bottom com safe-area, os itens
-     eram empurrados pra fora da caixa no iPhone e Android gestual.
-     min-height deixa a caixa crescer conforme o padding necessário. */
-  min-height: 60px;
-  height: auto;
-  background-color: var(--nav-bg);
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 1000;
-  /* CORRIGIDO: padding distribui o espaço da safe area corretamente.
-     O padding-top garante que os itens fiquem centrados verticalmente
-     mesmo quando o padding-bottom cresce por causa da safe area. */
-  padding-top: 8px;
-  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-  /* CORRIGIDO: box-sizing garante que padding não some à largura */
-  box-sizing: border-box;
+  min-height: 72px;
+  padding:
+    6px
+    max(8px, env(safe-area-inset-right, 0px))
+    calc(6px + env(safe-area-inset-bottom, 0px))
+    max(8px, env(safe-area-inset-left, 0px));
+  border-top: 1px solid var(--border-color, #d7dde2);
+  background: var(--nav-bg, #ffffff);
+  box-shadow: 0 -4px 16px rgba(14, 42, 58, 0.12);
+  isolation: isolate;
 }
 
 .nav-item {
-  background: none;
-  border: none;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--nav-gray);
-  font-size: 12px;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  min-height: 60px;
+  padding: 4px 3px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--nav-gray, #5f6b73);
+  font: inherit;
+  text-align: center;
   cursor: pointer;
-  /* CORRIGIDO: flex: 1 em vez de width: 33% — distribui o espaço
-     igualmente sem depender de porcentagem fixa, evitando
-     overflow quando a tela é muito estreita */
-  flex: 1;
-  position: relative;
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  outline: none;
-  transition: color 0.25s ease, transform 0.15s ease;
-  /* CORRIGIDO: padding interno para aumentar área de toque
-     sem depender de altura externa */
-  padding: 4px 0;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 120ms ease;
 }
 
-.nav-item span {
-  margin-top: 4px;
-  transition: transform 0.2s ease, font-weight 0.2s ease;
+.nav-item-indicador {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 30px;
+  border-radius: 999px;
+  background: transparent;
+  color: currentColor;
+  transition:
+    width 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 
-.nav-item svg {
-  font-size: 20px;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+.nav-item-indicador svg {
+  width: 23px;
+  height: 23px;
+}
+
+.nav-item-rotulo {
+  display: block;
+  overflow-wrap: anywhere;
+  color: currentColor;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.nav-item-ativo {
+  color: var(--nav-active, #0b3d60);
+  font-weight: 800;
+}
+
+.nav-item-ativo .nav-item-indicador {
+  width: 48px;
+  background: var(--nav-active-surface, #dcecf5);
+  transform: translateY(-1px);
+}
+
+.nav-item-ativo .nav-item-rotulo {
+  font-weight: 850;
+}
+
+.nav-item:focus-visible {
+  border-color: currentColor;
+  outline: 3px solid var(--focus-color, #0b3d60);
+  outline-offset: 1px;
 }
 
 .nav-item:active {
-  transform: scale(0.92);
-  opacity: 0.8;
+  transform: scale(0.97);
 }
 
-.nav-item.active {
-  color: var(--nav-active);
-  font-weight: bold;
+/* O modo de texto grande pode aumentar a altura. O ResizeObserver
+   recalcula automaticamente o espaço reservado no conteúdo. */
+.app-container.font-grande .nav-item {
+  min-height: 68px;
 }
 
-.nav-item.active svg {
-  transform: scale(1.25) translateY(-2px);
+.app-container.font-grande .nav-item-rotulo {
+  font-size: 0.9375rem;
 }
 
-.nav-item.active span {
-  transform: translateY(1px);
+.app-container.dark {
+  --nav-active-surface: #243f50;
 }
 
-/* PÍLULA DE FUNDO — sem alterações de visual */
-.nav-item::before {
-  content: '';
-  position: absolute;
-  top: 4px;
-  width: 46px;
-  height: 28px;
-  background-color: var(--nav-active);
-  opacity: 0;
-  border-radius: 14px;
-  transform: scaleX(0.4);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: -1;
+.app-container.dark .bottom-nav {
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.38);
 }
 
-.nav-item.active::before {
-  opacity: 0.15; 
-  transform: scaleX(1);
+.app-container.high-contrast .bottom-nav {
+  border-top: 3px solid #ffff00;
+  background: #000000;
+  box-shadow: none;
 }
 
-.app-container.high-contrast .nav-item.active span {
+.app-container.high-contrast .nav-item {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .nav-item-ativo {
+  color: #ffffff;
+}
+
+.app-container.high-contrast .nav-item-ativo .nav-item-indicador {
+  border: 2px solid #ffffff;
+  background: #000000;
+}
+
+.app-container.high-contrast .nav-item-ativo .nav-item-rotulo {
   text-decoration: underline;
+  text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+
+.app-container.high-contrast .nav-item:focus-visible {
+  border-color: #ffffff;
+  outline-color: #ffff00;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:hover {
+    background: var(--nav-hover-surface, rgba(11, 61, 96, 0.08));
+    color: var(--nav-active, #0b3d60);
+  }
+}
+
+@media (max-width: 20rem) {
+  .bottom-nav {
+    gap: 1px;
+    padding-right: max(3px, env(safe-area-inset-right, 0px));
+    padding-left: max(3px, env(safe-area-inset-left, 0px));
+  }
+
+  .nav-item {
+    padding-right: 1px;
+    padding-left: 1px;
+  }
+
+  .nav-item-rotulo {
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-item,
+  .nav-item-indicador {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .bottom-nav {
+    border-top: 2px solid CanvasText;
+    background: Canvas;
+  }
+
+  .nav-item {
+    color: ButtonText;
+  }
+
+  .nav-item-ativo {
+    border-color: Highlight;
+    color: Highlight;
+  }
+
+  .nav-item-ativo .nav-item-indicador {
+    border: 1px solid Highlight;
+    background: Canvas;
+  }
 }

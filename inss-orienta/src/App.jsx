@@ -41,9 +41,9 @@ export default function App() {
 
       {/* 2. O APLICATIVO CONTINUA RODANDO POR BAIXO: */}
       <div className={`app-container ${theme} font-${textSize}`}>
-        <Header setActiveTab={setActiveTab} />
+        <Header activeTab={activeTab} setActiveTab={setActiveTab} />
         
-        <main className="main-content">
+        <main id="conteudo-principal" className="main-content" tabIndex="-1">
           {activeTab === 'assistente' && (
             <AssistenteVirtual voltarParaHome={() => setActiveTab('inicio')} />
           )}
