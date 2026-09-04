@@ -1,65 +1,68 @@
-import React from 'react';
-import './beneficiogrid.css'; // Importamos o CSS específico para a tela de elegibilidade
-// ==========================================
-// IMPORTAÇÃO DAS IMAGENS (Salve na pasta assets)
-// ==========================================
-// 1. Aposentadoria Geral
-import apoNormal from '../../assets/elegibilidade/img_aposentadoria_geral_elegibilidade.png';
-import apoEscuro from '../../assets/elegibilidade/img_aposentadoria_geral_dark_mode.png';
-import apoHC from '../../assets/elegibilidade/img_aposentadoria_geral_alto_contraste_amarelo.png';
+import {
+  FaCalendarCheck,
+  FaChevronRight,
+  FaHandsHelping,
+  FaShieldAlt,
+} from 'react-icons/fa';
+import './beneficiogrid.css';
 
-// 2. Auxílios Suporte e Proteção
-import auxNormal from '../../assets/elegibilidade/img_auxilio_Assistencial_elegibilidade.png';
-import auxEscuro from '../../assets/elegibilidade/img_auxilio_assistencial_dark_mode.png';
-import auxHC from '../../assets/elegibilidade/img_auxilio_assistencial_alto_contraste.png';
+const CATEGORIAS = [
+  {
+    tela: 'aposentadoriaGeral',
+    classe: 'is-retirement',
+    etiqueta: 'Proteção previdenciária',
+    titulo: 'Aposentadorias',
+    descricao:
+      'Entenda modalidades, regras gerais, contribuições e documentos usados na análise.',
+    Icone: FaCalendarCheck,
+  },
+  {
+    tela: 'auxilios',
+    classe: 'is-protection',
+    etiqueta: 'Auxílios e proteção',
+    titulo: 'Afastamentos e proteção',
+    descricao:
+      'Veja orientações sobre incapacidade, maternidade, acidente e proteção aos dependentes.',
+    Icone: FaShieldAlt,
+  },
+  {
+    tela: 'assistenciais',
+    classe: 'is-assistance',
+    etiqueta: 'Assistência social',
+    titulo: 'Benefícios assistenciais',
+    descricao:
+      'Conheça o BPC e orientações voltadas a pessoas idosas ou com deficiência.',
+    Icone: FaHandsHelping,
+  },
+];
 
-// 3. Benefícios Assistenciais
-import assNormal from '../../assets/elegibilidade/img_Beneficios_assistenciais_elegibilidade.png';
-import assEscuro from '../../assets/elegibilidade/img_beneficios_assistenciais_dark_mode.png';
-import assHC from '../../assets/elegibilidade/img_beneficios_assistenciais_alto_contraste.png';
-
-export default function BeneficiosGrid({ theme, setActiveTab }) {
-  console.log("O Grid recebeu a função?", setActiveTab);
-  // Funções inteligentes para decidir qual imagem carregar para cada botão
-  const getImgAposentadoria = () => {
-    if (theme === 'dark') return apoEscuro;
-    if (theme === 'high-contrast') return apoHC;
-    return apoNormal;
-  };
-
-  const getImgAuxilios = () => {
-    if (theme === 'dark') return auxEscuro;
-    if (theme === 'high-contrast') return auxHC;
-    return auxNormal;
-  };
-
-  const getImgAssistenciais = () => {
-    if (theme === 'dark') return assEscuro;
-    if (theme === 'high-contrast') return assHC;
-    return assNormal;
-  };
-
+export default function BeneficiosGrid({ setActiveTab }) {
   return (
-    <div className="lista-categorias">
-      
-      {/* Botão 1: Aposentadoria */}
-      <button className="categoria-card" onClick={() => setActiveTab('aposentadoriaGeral')}>
-        <img src={getImgAposentadoria()} alt="Aposentadoria Geral" className="categoria-imagem" />
-        <span>APOSENTADORIA<br/>GERAL</span>
-      </button>
+    <ul className="benefits-grid" aria-label="Categorias de benefícios">
+      {CATEGORIAS.map(({ tela, classe, etiqueta, titulo, descricao, Icone }) => (
+        <li key={tela}>
+          <button
+            type="button"
+            className={`benefit-category-card ${classe}`}
+            aria-label={`Abrir orientações sobre ${titulo}`}
+            onClick={() => setActiveTab(tela)}
+          >
+            <span className="benefit-category-card__icon" aria-hidden="true">
+              <Icone focusable="false" />
+            </span>
 
-      {/* Botão 2: Auxílios */}
-      <button className="categoria-card" onClick={() => setActiveTab('auxilios')}>
-        <img src={getImgAuxilios()} alt="Auxílios Suporte e Proteção" className="categoria-imagem" />
-        <span>AUXÍLIOS<br/>SUPORTE E PROTEÇÃO</span>
-      </button>
-
-      {/* Botão 3: Assistenciais */}
-      <button className="categoria-card" onClick={() => setActiveTab('assistenciais')}>
-        <img src={getImgAssistenciais()} alt="Benefícios Assistenciais" className="categoria-imagem" />
-        <span>BENEFÍCIOS<br/>ASSISTENCIAIS</span>
-      </button>
-
-    </div>
+            <span className="benefit-category-card__content">
+              <span className="benefit-category-card__tag">{etiqueta}</span>
+              <strong>{titulo}</strong>
+              <span className="benefit-category-card__description">{descricao}</span>
+              <span className="benefit-category-card__action" aria-hidden="true">
+                Ver orientações
+                <FaChevronRight focusable="false" />
+              </span>
+            </span>
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }

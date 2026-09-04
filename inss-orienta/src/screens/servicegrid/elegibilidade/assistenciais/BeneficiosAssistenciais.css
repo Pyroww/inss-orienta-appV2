@@ -1,226 +1,847 @@
-.assistenciais-container {
-  position: fixed;
-  top: 60px;
-  /* CORRIGIDO: bottom fixo não respeita safe area do Android gestual.
-     env(safe-area-inset-bottom) soma o espaço correto em cada dispositivo */
-  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
-  left: 0;
+/* =========================================================
+   BENEFÍCIOS ASSISTENCIAIS — INSS ORIENTA
+   ========================================================= */
+
+.assistance-guidance {
+  --assistance-accent: #0b3d60;
+  --assistance-accent-strong: #07517d;
+  --assistance-accent-soft: #eaf4f9;
+  --assistance-muted: #53636e;
+  --assistance-warning: #805800;
+  --assistance-warning-soft: #fff7d6;
+  --assistance-warning-text: #352500;
+  --assistance-safe: #08783e;
+  --assistance-safe-soft: #eaf7ef;
   width: 100%;
-  background-color: var(--bg-color);
-  z-index: 15;
-  display: flex;
-  flex-direction: column;
-  /* CORRIGIDO: overflow-x hidden evita vazamento lateral */
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.interno-header {
-  display: flex;
-  align-items: center;
-  background-color: var(--inss-blue);
-  color: white;
-  padding: 5px 15px;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  flex-shrink: 0;
-  /* CORRIGIDO: box-sizing garante que padding não estoure a largura */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.assistenciais-conteudo {
-  flex: 1;
-  /* CORRIGIDO: overflow-y: auto aqui dentro do position: fixed
-     é a exceção correta — o container fixed isola o scroll
-     do resto da página, então aqui pode ter overflow-y: auto */
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  padding: 20px;
-  /* CORRIGIDO: padding-bottom garante que o último item
-     não fique colado no rodapé em nenhum dispositivo */
-  padding-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-/* Alerta importante */
-.alerta-importante {
-  background-color: var(--card-bgType2);
-  border-left: 5px solid #ef4444;
-  padding: 15px;
-  border-radius: 8px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  /* CORRIGIDO: box-sizing evita que border-left some à largura */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.icone-alerta {
-  color: #ef4444;
-  font-size: 24px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.alerta-importante p {
-  margin: 0;
-  font-size: 0.95rem;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2px 0 22px;
   color: var(--text-color);
-  line-height: 1.4;
-  /* CORRIGIDO: texto longo quebra linha em vez de vazar */
-  flex: 1;
-  min-width: 0;
-  word-break: break-word;
-  overflow-wrap: break-word;
 }
 
-.titulo-secao {
-  font-size: 1.2rem;
-  color: var(--title-color);
-  margin: 0;
-  margin-top: 10px;
-  /* CORRIGIDO: título longo não estoura em telas estreitas */
-  word-break: break-word;
-}
-
-.mt-3 {
-  margin-top: 20px;
-}
-
-/* Cards BPC */
-.lista-assistenciais {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  /* CORRIGIDO: width e box-sizing contêm a lista lateralmente */
-  width: 100%;
+.assistance-guidance,
+.assistance-guidance * {
   box-sizing: border-box;
 }
 
-.card-assistencial {
-  background-color: var(--card-bgType2);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  /* CORRIGIDO: width 100% garante que o card não estoure a lista */
-  width: 100%;
-  box-sizing: border-box;
+.assistance-guidance :where(button) {
+  font: inherit;
 }
 
-.card-header {
-  display: flex;
+.assistance-guidance :where(button, a) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.assistance-guidance :where(button, a):focus-visible {
+  outline: 3px solid var(--focus-color, var(--assistance-accent));
+  outline-offset: 3px;
+}
+
+.assistance-guidance__header {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  padding: 15px;
-  color: var(--cat-text);
-  border-bottom: var(--cat-border);
-  /* CORRIGIDO: box-sizing e width contêm o header */
-  box-sizing: border-box;
-  width: 100%;
+  gap: 13px;
+  min-height: 82px;
+  padding: 15px 17px;
+  border: 1px solid #0a3552;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    var(--assistance-accent),
+    var(--assistance-accent-strong)
+  );
+  color: #ffffff;
+  box-shadow: 0 5px 16px rgba(11, 61, 96, 0.19);
 }
 
-.card-header h3 {
-  margin: 0;
-  font-size: 1.15rem;
-  /* CORRIGIDO: título longo quebra linha em vez de vazar o card */
-  word-break: break-word;
-  overflow-wrap: break-word;
-  min-width: 0;
-  flex: 1;
-}
-
-.icone-assistencial {
-  font-size: 24px;
-  /* CORRIGIDO: ícone não encolhe quando o título é longo */
-  flex-shrink: 0;
-}
-
-.card-header.idoso { background-color: var(--cat-idoso); }
-.card-header.pcd { background-color: var(--cat-pcd); }
-
-.card-body {
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  /* CORRIGIDO: box-sizing evita overflow com padding */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.assistenciais-container .card-assistencial .card-body p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--text-color) !important;
-  line-height: 1.4;
-  /* CORRIGIDO: texto longo quebra linha dentro do card */
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-/* Card Especial CadÚnico */
-.card-cadunico {
-  display: flex;
-  background-color: var(--card-bgType2);
-  border-radius: 12px;
-  border: 2px dashed var(--border-color);
-  overflow: hidden;
-  align-items: center;
-  /* CORRIGIDO: flex-wrap permite que ícone e texto quebrem
-     para linhas separadas em telas estreitas */
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.cadunico-icone-area {
-  background-color: var(--bg-color);
-  padding: 20px;
-  display: flex;
+.assistance-guidance__back {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* CORRIGIDO: flex-shrink: 0 evita que a área do ícone
-     encolha e deforme quando o texto é longo */
-  flex-shrink: 0;
-}
-
-.icone-grande {
-  font-size: 40px;
-  color: var(--title-color);
-}
-
-.cadunico-texto {
-  padding: 15px;
-  /* CORRIGIDO: flex: 1 e min-width: 0 garantem que o texto
-     ocupe o espaço restante sem vazar o card */
-  flex: 1;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-.cadunico-texto h4 {
-  margin: 0 0 5px 0;
-  color: var(--title-color);
-  font-size: 1.1rem;
-  /* CORRIGIDO: título longo quebra linha em vez de vazar */
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-.assistenciais-container .card-cadunico .cadunico-texto p {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
   margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-color) !important;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.assistance-guidance__back:hover {
+  background: rgba(255, 255, 255, 0.19);
+}
+
+.assistance-guidance__back:active {
+  transform: translateX(-2px) scale(0.96);
+}
+
+.assistance-guidance__back svg {
+  width: 21px;
+  height: 21px;
+}
+
+.assistance-guidance__eyebrow {
+  margin: 0 0 3px;
+  color: var(--assistance-accent);
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.assistance-guidance__header .assistance-guidance__eyebrow {
+  color: #d8efff;
+}
+
+.assistance-guidance__header h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.3rem, 5.6vw, 1.78rem);
+  font-weight: 900;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+}
+
+.assistance-guidance__hero {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 15px;
+  margin-top: 14px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--assistance-accent-soft);
+  box-shadow: 0 3px 13px rgba(11, 61, 96, 0.075);
+}
+
+.assistance-guidance__hero-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
+  background: var(--card-bg);
+  color: var(--assistance-accent);
+  box-shadow: 0 3px 11px rgba(11, 61, 96, 0.14);
+}
+
+.assistance-guidance__hero-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.assistance-guidance__hero h2 {
+  margin: 0;
+  color: var(--assistance-accent);
+  font-size: clamp(1.3rem, 5.4vw, 1.7rem);
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+.assistance-guidance__hero div > p:last-child {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  line-height: 1.57;
+}
+
+.assistance-guidance__important,
+.assistance-guidance__free,
+.assistance-guidance__source-note {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.assistance-guidance__important {
+  margin-top: 14px;
+  padding: 15px;
+  border: 2px solid var(--assistance-warning);
+  border-radius: 14px;
+  background: var(--assistance-warning-soft);
+  color: var(--assistance-warning-text);
+}
+
+.assistance-guidance__important > svg,
+.assistance-guidance__free > svg,
+.assistance-guidance__source-note > svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  color: var(--assistance-warning);
+}
+
+.assistance-guidance__important h2 {
+  margin: 0;
+  color: inherit;
+  font-size: 1.08rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.assistance-guidance__important p,
+.assistance-guidance__free p,
+.assistance-guidance__source-note p {
+  margin: 5px 0 0;
+  line-height: 1.55;
+}
+
+.assistance-guidance__free p,
+.assistance-guidance__source-note p {
+  margin-top: 0;
+}
+
+.assistance-guidance__benefits,
+.assistance-guidance__prepare,
+.assistance-guidance__roles {
+  margin-top: 22px;
+  padding: 19px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--card-bg);
+  box-shadow: 0 3px 13px rgba(11, 61, 96, 0.06);
+}
+
+.assistance-guidance__section-heading h2,
+.assistance-guidance__prepare h2 {
+  margin: 0;
+  color: var(--title-color);
+  font-size: 1.28rem;
+  font-weight: 900;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
+
+.assistance-guidance__section-heading > p:last-child {
+  margin: 6px 0 0;
+  line-height: 1.55;
+}
+
+.assistance-guidance__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.assistance-guidance__grid > li {
+  min-width: 0;
+}
+
+.assistance-guidance__grid > li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.assistance-benefit-card {
+  --assistance-card-accent: #0b5f8a;
+  --assistance-card-soft: #e9f4fa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  border-top: 6px solid var(--assistance-card-accent);
+  border-radius: 16px;
+  background: var(--bg-color);
+}
+
+.assistance-benefit-card.is-disability {
+  --assistance-card-accent: #08783e;
+  --assistance-card-soft: #eaf7ef;
+}
+
+.assistance-benefit-card.is-inclusion {
+  --assistance-card-accent: #6941a5;
+  --assistance-card-soft: #f2ecfb;
+}
+
+.assistance-benefit-card__heading {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  padding: 15px 15px 0;
+}
+
+.assistance-benefit-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--assistance-card-soft);
+  color: var(--assistance-card-accent);
+}
+
+.assistance-benefit-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.assistance-benefit-card__heading p {
+  margin: 0 0 3px;
+  color: var(--assistance-card-accent);
+  font-size: 0.71rem;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.assistance-benefit-card__heading h3 {
+  margin: 0;
+  color: var(--title-color);
+  font-size: 1.08rem;
+  font-weight: 900;
   line-height: 1.3;
-  /* CORRIGIDO: texto longo quebra linha dentro do card */
-  word-break: break-word;
-  overflow-wrap: break-word;
+}
+
+.assistance-benefit-card__summary {
+  margin: 13px 15px 0;
+  font-size: 0.95rem;
+  line-height: 1.56;
+}
+
+.assistance-benefit-card__facts {
+  display: grid;
+  gap: 10px;
+  margin: 14px 15px 15px;
+}
+
+.assistance-benefit-card__facts > div {
+  padding: 11px;
+  border-radius: 12px;
+  background: var(--card-bg);
+}
+
+.assistance-benefit-card__facts dt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--assistance-card-accent);
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.assistance-benefit-card__facts dt svg {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+}
+
+.assistance-benefit-card__facts dd {
+  margin: 5px 0 0;
+  font-size: 0.91rem;
+  line-height: 1.52;
+}
+
+.assistance-benefit-card > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  margin: auto 15px 15px;
+  padding: 10px 13px;
+  border: 2px solid var(--assistance-card-accent);
+  border-radius: 11px;
+  background: transparent;
+  color: var(--assistance-card-accent);
+  font-weight: 900;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: none;
+}
+
+.assistance-benefit-card > a:hover {
+  background: var(--assistance-card-soft);
+}
+
+.assistance-benefit-card > a svg,
+.assistance-guidance__reference-links a svg,
+.assistance-guidance__official-links a svg {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+}
+
+.assistance-guidance__prepare {
+  border-width: 2px;
+  border-color: var(--assistance-accent);
+}
+
+.assistance-guidance__prepare-heading {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+}
+
+.assistance-guidance__prepare-heading > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: var(--assistance-accent-soft);
+  color: var(--assistance-accent);
+}
+
+.assistance-guidance__prepare-heading > span svg {
+  width: 22px;
+  height: 22px;
+}
+
+.assistance-guidance__checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.assistance-guidance__checklist li {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px;
+  border: 1px solid var(--border-color);
+  border-radius: 13px;
+  background: var(--bg-color);
+}
+
+.assistance-guidance__checklist li > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--assistance-accent-soft);
+  color: var(--assistance-accent);
+}
+
+.assistance-guidance__checklist li > span svg {
+  width: 20px;
+  height: 20px;
+}
+
+.assistance-guidance__checklist p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.52;
+}
+
+.assistance-guidance__checklist strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--title-color);
+  font-size: 0.98rem;
+}
+
+.assistance-guidance__reference-links,
+.assistance-guidance__official-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.assistance-guidance__reference-links a,
+.assistance-guidance__official-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 10px 13px;
+  border: 2px solid var(--assistance-accent);
+  border-radius: 12px;
+  color: var(--assistance-accent);
+  font-weight: 900;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: none;
+}
+
+.assistance-guidance__reference-links a:hover {
+  background: var(--assistance-accent-soft);
+}
+
+.assistance-guidance__role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.assistance-guidance__role-grid article {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  background: var(--bg-color);
+}
+
+.assistance-guidance__role-grid article > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--assistance-accent-soft);
+  color: var(--assistance-accent);
+}
+
+.assistance-guidance__role-grid article > span svg {
+  width: 21px;
+  height: 21px;
+}
+
+.assistance-guidance__role-grid h3 {
+  margin: 0;
+  color: var(--title-color);
+  font-size: 1.04rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.assistance-guidance__role-grid p {
+  margin: 6px 0 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.assistance-guidance__official-links a {
+  background: var(--assistance-accent);
+  color: #ffffff;
+}
+
+.assistance-guidance__official-links a + a {
+  background: var(--card-bg);
+  color: var(--assistance-accent);
+}
+
+.assistance-guidance__free {
+  margin-top: 15px;
+  padding: 14px 15px;
+  border: 2px solid var(--assistance-safe);
+  border-radius: 14px;
+  background: var(--assistance-safe-soft);
+}
+
+.assistance-guidance__free > svg {
+  color: var(--assistance-safe);
+}
+
+.assistance-guidance__source-note {
+  margin-top: 18px;
+  padding: 0 3px;
+  color: var(--assistance-muted);
+  font-size: 0.88rem;
+}
+
+.assistance-guidance__source-note > svg {
+  color: var(--assistance-accent);
+}
+
+.assistance-guidance__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tema escuro */
+.app-container.dark .assistance-guidance {
+  --assistance-accent: #82c8f5;
+  --assistance-accent-strong: #a6dafb;
+  --assistance-accent-soft: #102e42;
+  --assistance-muted: #b9c7d0;
+  --assistance-warning: #f4c44e;
+  --assistance-warning-soft: #3a2d08;
+  --assistance-warning-text: #fff0b5;
+  --assistance-safe: #65d89a;
+  --assistance-safe-soft: #123425;
+}
+
+.app-container.dark .assistance-guidance__header {
+  border-color: #5eacd9;
+  background: linear-gradient(135deg, #08283b, #0d4c70);
+}
+
+.app-container.dark .assistance-guidance__hero,
+.app-container.dark .assistance-guidance__benefits,
+.app-container.dark .assistance-guidance__prepare,
+.app-container.dark .assistance-guidance__roles {
+  box-shadow: none;
+}
+
+.app-container.dark .assistance-benefit-card {
+  --assistance-card-accent: #82c8f5;
+  --assistance-card-soft: #102e42;
+}
+
+.app-container.dark .assistance-benefit-card.is-disability {
+  --assistance-card-accent: #65d89a;
+  --assistance-card-soft: #123425;
+}
+
+.app-container.dark .assistance-benefit-card.is-inclusion {
+  --assistance-card-accent: #c6a6f7;
+  --assistance-card-soft: #302344;
+}
+
+.app-container.dark .assistance-guidance__official-links a:first-child {
+  color: #07141c;
+}
+
+/* Alto contraste */
+.app-container.high-contrast .assistance-guidance {
+  --assistance-accent: #ffff00;
+  --assistance-accent-strong: #ffff00;
+  --assistance-accent-soft: #000000;
+  --assistance-muted: #ffffff;
+  --assistance-warning: #ffff00;
+  --assistance-warning-soft: #000000;
+  --assistance-warning-text: #ffff00;
+  --assistance-safe: #ffff00;
+  --assistance-safe-soft: #000000;
+}
+
+.app-container.high-contrast .assistance-guidance__header {
+  border: 3px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .assistance-guidance__header h1,
+.app-container.high-contrast .assistance-guidance__header .assistance-guidance__eyebrow,
+.app-container.high-contrast .assistance-guidance__back {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .assistance-guidance__back {
+  border: 2px solid #ffff00;
+  background: #000000;
+}
+
+.app-container.high-contrast .assistance-guidance :where(
+    .assistance-guidance__hero,
+    .assistance-guidance__important,
+    .assistance-guidance__benefits,
+    .assistance-benefit-card,
+    .assistance-benefit-card__facts > div,
+    .assistance-guidance__prepare,
+    .assistance-guidance__checklist li,
+    .assistance-guidance__roles,
+    .assistance-guidance__role-grid article,
+    .assistance-guidance__free
+  ) {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .assistance-benefit-card {
+  --assistance-card-accent: #ffff00;
+  --assistance-card-soft: #000000;
+  border-top-width: 6px;
+}
+
+.app-container.high-contrast .assistance-guidance :where(
+    .assistance-guidance__eyebrow,
+    .assistance-guidance__hero h2,
+    .assistance-guidance__section-heading h2,
+    .assistance-guidance__prepare h2,
+    .assistance-benefit-card__heading p,
+    .assistance-benefit-card__heading h3,
+    .assistance-benefit-card__facts dt,
+    .assistance-guidance__checklist strong,
+    .assistance-guidance__role-grid h3,
+    .assistance-guidance__source-note,
+    .assistance-guidance__source-note > svg
+  ) {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .assistance-guidance :where(
+    .assistance-guidance__hero-icon,
+    .assistance-benefit-card__icon,
+    .assistance-guidance__prepare-heading > span,
+    .assistance-guidance__checklist li > span,
+    .assistance-guidance__role-grid article > span
+  ) {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .assistance-guidance :where(
+    .assistance-benefit-card > a,
+    .assistance-guidance__reference-links a,
+    .assistance-guidance__official-links a
+  ) {
+  border: 2px solid #ffff00;
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .assistance-guidance__official-links a + a {
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .assistance-guidance :where(button, a):focus-visible {
+  outline-color: #00ffff;
+}
+
+/* Texto grande */
+.app-container.font-grande .assistance-guidance__grid,
+.app-container.font-grande .assistance-guidance__checklist,
+.app-container.font-grande .assistance-guidance__role-grid,
+.app-container.font-grande .assistance-guidance__reference-links,
+.app-container.font-grande .assistance-guidance__official-links {
+  grid-template-columns: 1fr;
+}
+
+.app-container.font-grande .assistance-guidance__grid > li:last-child:nth-child(odd) {
+  grid-column: auto;
+}
+
+/* Telas menores */
+@media (max-width: 620px) {
+  .assistance-guidance__grid,
+  .assistance-guidance__checklist,
+  .assistance-guidance__role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .assistance-guidance__grid > li:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .assistance-guidance__hero {
+    grid-template-columns: 1fr;
+  }
+
+  .assistance-guidance__hero-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .assistance-guidance__reference-links,
+  .assistance-guidance__official-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 360px) {
+  .assistance-guidance__header {
+    gap: 11px;
+    padding-inline: 13px;
+  }
+
+  .assistance-guidance__hero,
+  .assistance-guidance__benefits,
+  .assistance-guidance__prepare,
+  .assistance-guidance__roles {
+    padding: 16px 14px;
+  }
+
+  .assistance-benefit-card__heading {
+    grid-template-columns: 43px minmax(0, 1fr);
+    padding-inline: 12px;
+  }
+
+  .assistance-benefit-card__icon {
+    width: 43px;
+    height: 43px;
+  }
+
+  .assistance-benefit-card__summary,
+  .assistance-benefit-card__facts {
+    margin-inline: 12px;
+  }
+
+  .assistance-benefit-card > a {
+    margin-inline: 12px;
+  }
+
+  .assistance-guidance__checklist li,
+  .assistance-guidance__role-grid article {
+    grid-template-columns: 40px minmax(0, 1fr);
+    padding: 12px 10px;
+  }
+
+  .assistance-guidance__checklist li > span,
+  .assistance-guidance__role-grid article > span {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assistance-guidance__back {
+    transition: none;
+  }
+
+  .assistance-guidance__back:active {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .assistance-guidance__header,
+  .assistance-guidance__hero,
+  .assistance-guidance__important,
+  .assistance-guidance__benefits,
+  .assistance-benefit-card,
+  .assistance-guidance__prepare,
+  .assistance-guidance__checklist li,
+  .assistance-guidance__roles,
+  .assistance-guidance__role-grid article,
+  .assistance-guidance__free,
+  .assistance-benefit-card > a,
+  .assistance-guidance__reference-links a,
+  .assistance-guidance__official-links a {
+    border: 2px solid CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .assistance-guidance :where(button, a):focus-visible {
+    outline: 3px solid Highlight;
+  }
 }

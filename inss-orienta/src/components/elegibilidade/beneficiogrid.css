@@ -1,90 +1,252 @@
-.lista-categorias {
-  /* CORRIGIDO: grid em vez de flex column — permite duas colunas
-     em telas maiores e cai para uma coluna automaticamente
-     em telas estreitas, sem media query */
+/* =========================================================
+   GRADE DE CATEGORIAS — BENEFÍCIOS E PROTEÇÕES
+   ========================================================= */
+
+.benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 20px;
-  /* CORRIGIDO: align-items: center não faz sentido em grid,
-     removido para os cards ocuparem a largura total da célula */
-  box-sizing: border-box;
-  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.categoria-card {
-  background-color: var(--card-bgType2);
-  border: none;
-  /* CORRIGIDO: width: 100% + max-width: 250px centralizava o card
-     mas desperdiçava espaço lateral. No grid, width: 100% ocupa
-     exatamente a célula disponível */
+.benefits-grid > li {
+  min-width: 0;
+}
+
+.benefits-grid > li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.benefit-category-card {
+  --benefit-card-accent: #0b5f8a;
+  --benefit-card-soft: #e9f4fa;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 13px;
   width: 100%;
-  /* CORRIGIDO: max-width removido — o grid já controla o tamanho */
+  min-height: 100%;
+  margin: 0;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-left: 5px solid var(--benefit-card-accent);
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 3px 11px rgba(11, 61, 96, 0.06);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.benefit-category-card.is-protection {
+  --benefit-card-accent: #08783e;
+  --benefit-card-soft: #eaf7ef;
+}
+
+.benefit-category-card.is-assistance {
+  --benefit-card-accent: #a45113;
+  --benefit-card-soft: #fff1e5;
+}
+
+.benefit-category-card:hover {
+  border-color: var(--benefit-card-accent);
+  box-shadow: 0 7px 18px rgba(11, 61, 96, 0.13);
+  transform: translateY(-2px);
+}
+
+.benefit-category-card:active {
+  transform: scale(0.985);
+}
+
+.benefit-category-card:focus-visible {
+  outline: 3px solid var(--focus-color, var(--benefit-card-accent));
+  outline-offset: 3px;
+}
+
+.benefit-category-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--benefit-card-soft);
+  color: var(--benefit-card-accent);
+}
+
+.benefit-category-card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.benefit-category-card__content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  /* CORRIGIDO: box-sizing garante contenção */
-  box-sizing: border-box;
-  /* CORRIGIDO: border-radius no card para consistência visual */
-  border-radius: 30px;
-  overflow: hidden;
-  /* CORRIGIDO: position: relative para o z-index interno funcionar */
-  position: relative;
+  min-width: 0;
 }
 
-/* Imagem do botão de benefício */
-.categoria-imagem {
-  width: 100%;
-  /* CORRIGIDO: height fixa de 200px quebrava proporção em telas
-     com densidade diferente. aspect-ratio mantém a proporção
-     automaticamente em qualquer largura de tela */
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 30px;
-  /* CORRIGIDO: margin-bottom negativo causava overflow fora do card.
-     Mantido mas com overflow: hidden no pai para conter */
-  margin-bottom: -15px;
-  z-index: 1;
-  background-color: var(--card-bgType2);
-  /* CORRIGIDO: display block remove espaço fantasma abaixo da imagem */
-  display: block;
-  max-width: 100%;
-  /* CORRIGIDO: transition aplicada diretamente para o :active funcionar */
-  transition: transform 0.1s ease;
-}
-
-.categoria-card:active .categoria-imagem {
-  transform: scale(0.95);
-}
-
-.categoria-card span {
-  color: var(--inss-blue);
+.benefit-category-card__tag {
+  margin-bottom: 3px;
+  color: var(--benefit-card-accent);
+  font-size: 0.72rem;
   font-weight: 900;
-  text-align: center;
-  font-size: 14px;
-  z-index: 2;
-  /* CORRIGIDO: "var(--card-bgtype2)" com 't' minúsculo era variável
-     inválida — a cor nunca aplicava em nenhum dispositivo.
-     Corrigido para var(--card-bgType2) com 'T' maiúsculo */
-  background-color: var(--card-bgType2);
-  padding: 4px 10px 10px 10px;
-  /* CORRIGIDO: width: 100% garante que o label ocupe toda a largura
-     para centralizar corretamente */
-  width: 100%;
-  box-sizing: border-box;
-  /* CORRIGIDO: texto longo quebra linha em vez de vazar o card */
-  word-break: break-word;
-  overflow-wrap: break-word;
+  line-height: 1.35;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.benefit-category-card__content > strong {
+  color: var(--title-color);
+  font-size: 1.08rem;
+  font-weight: 900;
   line-height: 1.3;
 }
 
-.divisor {
-  border: none;
-  border-top: 2px solid var(--border-color);
-  margin: 40px 0;
-  /* CORRIGIDO: width: 100% garante que o divisor ocupe
-     toda a largura disponível */
-  width: 100%;
+.benefit-category-card__description {
+  margin-top: 6px;
+  font-size: 0.94rem;
+  line-height: 1.52;
+}
+
+.benefit-category-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  margin-top: 11px;
+  color: var(--benefit-card-accent);
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.benefit-category-card__action svg {
+  width: 12px;
+  height: 12px;
+}
+
+.app-container.dark .benefit-category-card {
+  --benefit-card-accent: #82c8f5;
+  box-shadow: none;
+}
+
+.app-container.dark .benefit-category-card.is-protection {
+  --benefit-card-accent: #65d89a;
+}
+
+.app-container.dark .benefit-category-card.is-assistance {
+  --benefit-card-accent: #ffb37a;
+}
+
+.app-container.dark .benefit-category-card__icon {
+  background: #102e42;
+}
+
+.app-container.dark .benefit-category-card.is-protection .benefit-category-card__icon {
+  background: #123425;
+}
+
+.app-container.dark .benefit-category-card.is-assistance .benefit-category-card__icon {
+  background: #3a291b;
+}
+
+.app-container.high-contrast .benefit-category-card {
+  --benefit-card-accent: #ffff00;
+  border: 2px solid #ffff00;
+  border-left-width: 6px;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .benefit-category-card__icon {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .benefit-category-card :where(
+    .benefit-category-card__tag,
+    .benefit-category-card__content > strong,
+    .benefit-category-card__action
+  ) {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .benefit-category-card:hover,
+.app-container.high-contrast .benefit-category-card:focus-visible {
+  outline-color: #00ffff;
+  border-color: #00ffff;
+}
+
+.app-container.font-grande .benefits-grid {
+  grid-template-columns: 1fr;
+}
+
+.app-container.font-grande .benefits-grid > li:last-child:nth-child(odd) {
+  grid-column: auto;
+}
+
+.app-container.font-grande .benefit-category-card {
+  min-height: 112px;
+}
+
+@media (max-width: 620px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits-grid > li:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .benefit-category-card {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 11px;
+    padding: 14px 12px;
+  }
+
+  .benefit-category-card__icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .benefit-category-card__icon svg {
+    width: 21px;
+    height: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .benefit-category-card {
+    transition: none;
+  }
+
+  .benefit-category-card:hover,
+  .benefit-category-card:active {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .benefit-category-card,
+  .benefit-category-card__icon {
+    border: 2px solid ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .benefit-category-card:focus-visible {
+    outline: 3px solid Highlight;
+  }
 }
