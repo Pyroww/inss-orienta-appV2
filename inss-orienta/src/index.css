@@ -99,11 +99,22 @@
 }
 
 /* CORREÇÃO 1: html e body nunca devem rolar ou vazar lateralmente */
-html, body {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   width: 100%;
   max-width: 100%;
+  min-height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
   overflow-x: hidden;
   overflow-y: hidden; /* Quem rola é o .app-container, não o body */
   font-family: Arial, sans-serif;
