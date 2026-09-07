@@ -1,49 +1,219 @@
-.lista-categorias {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+/* =========================================================
+   MÉTODOS DE RECUPERAÇÃO DA CONTA GOV.BR
+   ========================================================= */
+
+.gov-recovery-methods {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.categoria-card {
-  background-color: var(--card-bgType2);
-  border: none;
-  width: 100%;
-  max-width: 250px;
-  display: flex;
-  flex-direction: column;
+.gov-recovery-methods > li {
+  min-width: 0;
+}
+
+.gov-recovery-card {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 20px;
   align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 104px;
+  padding: 14px;
+  border: 2px solid var(--border-color, #e0e0e0);
+  border-radius: 15px;
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #333333);
+  font: inherit;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(11, 61, 96, 0.07);
   cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 120ms ease;
 }
 
-/* Estilo das imagens dos botões */
-.categoria-imagem {
-  width: 100%;
-  height: 200px;
-  object-fit: cover; 
-  border-radius: 30px; 
-  margin-bottom: -15px; 
-  z-index: 1;
-  background-color: var(--card-bgType2);
+.gov-recovery-card:hover {
+  border-color: var(--gov-password-accent, #0b3d60);
+  background: var(--gov-password-accent-soft, #eaf3f8);
+  box-shadow: 0 4px 13px rgba(11, 61, 96, 0.12);
 }
 
-.categoria-card:active .categoria-imagem {
-  transform: scale(0.95);
-  transition: transform 0.1s;
+.gov-recovery-card:active {
+  transform: scale(0.985);
 }
 
-.categoria-card span {
-  color: var(--inss-blue);
+.gov-recovery-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 17px;
+}
+
+.gov-recovery-card-icon svg {
+  width: 27px;
+  height: 27px;
+}
+
+.gov-recovery-card--facial .gov-recovery-card-icon {
+  background: #f0e8fb;
+  color: #6f31a6;
+}
+
+.gov-recovery-card--bank .gov-recovery-card-icon {
+  background: #e7f0ff;
+  color: #1d5fbd;
+}
+
+.gov-recovery-card--message .gov-recovery-card-icon {
+  background: #e6f7ed;
+  color: #08783e;
+}
+
+.gov-recovery-card-copy {
+  display: block;
+  min-width: 0;
+}
+
+.gov-recovery-card-copy strong,
+.gov-recovery-card-copy > span,
+.gov-recovery-card-copy small {
+  display: block;
+}
+
+.gov-recovery-card-copy strong {
+  color: var(--title-color, #0b3d60);
+  font-size: 1.07rem;
   font-weight: 900;
-  text-align: center;
-  font-size: 14px;
-  z-index: 2;
-  background-color: var(--card-bgtype2);
-  padding: 0 10px;
+  line-height: 1.32;
 }
 
-.divisor {
-  border: none;
-  border-top: 2px solid var(--border-color);
-  margin: 40px 0;
+.gov-recovery-card-copy > span {
+  margin-top: 4px;
+  font-size: 0.94rem;
+  line-height: 1.48;
+}
+
+.gov-recovery-card-copy small {
+  margin-top: 5px;
+  color: var(--gov-password-muted, #56656f);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.gov-recovery-card-arrow {
+  width: 17px;
+  height: 17px;
+  color: var(--gov-password-accent, #0b3d60);
+}
+
+.app-container.dark .gov-recovery-card {
+  box-shadow: none;
+}
+
+.app-container.dark .gov-recovery-card--facial .gov-recovery-card-icon {
+  background: #32243d;
+  color: #d8aff8;
+}
+
+.app-container.dark .gov-recovery-card--bank .gov-recovery-card-icon {
+  background: #1c314c;
+  color: #9bc5ff;
+}
+
+.app-container.dark .gov-recovery-card--message .gov-recovery-card-icon {
+  background: #153528;
+  color: #69dfa0;
+}
+
+.app-container.high-contrast .gov-recovery-card {
+  border-color: #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .gov-recovery-card-icon {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .gov-recovery-card-copy strong,
+.app-container.high-contrast .gov-recovery-card-copy > span,
+.app-container.high-contrast .gov-recovery-card-arrow {
+  color: #ffff00;
+}
+
+.app-container.high-contrast .gov-recovery-card-copy small {
+  color: #ffffff;
+}
+
+.app-container.high-contrast .gov-recovery-card:hover {
+  outline: 2px solid #ffffff;
+  outline-offset: -6px;
+}
+
+.app-container.font-grande .gov-recovery-card {
+  grid-template-columns: 56px minmax(0, 1fr);
+}
+
+.app-container.font-grande .gov-recovery-card-arrow {
+  display: none;
+}
+
+@media (max-width: 22.5rem) {
+  .gov-recovery-card {
+    grid-template-columns: 48px minmax(0, 1fr) 16px;
+    gap: 10px;
+    min-height: 98px;
+    padding: 12px;
+    border-radius: 13px;
+  }
+
+  .gov-recovery-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .gov-recovery-card-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .gov-recovery-card-copy strong {
+    font-size: 1rem;
+  }
+
+  .gov-recovery-card-copy > span {
+    font-size: 0.9rem;
+  }
+
+  .gov-recovery-card-copy small {
+    font-size: 0.79rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gov-recovery-card {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .gov-recovery-card,
+  .gov-recovery-card-icon {
+    border: 2px solid ButtonText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
 }

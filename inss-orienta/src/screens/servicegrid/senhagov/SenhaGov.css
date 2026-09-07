@@ -1,233 +1,548 @@
-.senhagov-container {
-  position: fixed;
-  top: 60px;
-  /* CORRIGIDO: bottom fixo não respeita safe area do Android gestual.
-     env(safe-area-inset-bottom) soma o espaço correto em cada dispositivo */
-  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
-  left: 0;
+/* =========================================================
+   RECUPERAR SENHA GOV.BR — INSS ORIENTA
+   ========================================================= */
+
+.gov-password-screen {
+  --gov-password-accent: #0b3d60;
+  --gov-password-accent-strong: #07324f;
+  --gov-password-accent-soft: #eaf3f8;
+  --gov-password-muted: #56656f;
+  --gov-password-safe: #08783e;
+  --gov-password-safe-bg: #edf8f2;
+  --gov-password-warning: #8a5a00;
+  --gov-password-warning-bg: #fff7d6;
   width: 100%;
-  background-color: var(--bg-color);
-  z-index: 15;
-  display: flex;
-  flex-direction: column;
-  /* CORRIGIDO: overflow hidden evita vazamento lateral */
-  overflow: hidden;
-  box-sizing: border-box;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2px 0 24px;
+  color: var(--text-color, #333333);
 }
 
-.interno-header {
-  display: flex;
-  align-items: center;
-  background-color: var(--inss-blue);
-  color: white;
-  padding: 5px 15px;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  flex-shrink: 0;
-  /* CORRIGIDO: box-sizing e width contêm o header */
-  box-sizing: border-box;
-  width: 100%;
+.gov-password-screen :where(button, a) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-.senhagov-conteudo {
-  flex: 1;
-  /* CORRIGIDO: overflow-y: auto é correto aqui pois o container
-     pai é position: fixed — contexto isolado de scroll.
-     overflow-x: hidden evita vazamento lateral */
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 30px;
+.gov-password-screen :where(button, a):focus-visible {
+  outline: 3px solid #f4a000;
+  outline-offset: 3px;
 }
 
-/* Banner */
-.banner-area {
-  width: 100%;
-  background-color: #f1f5f9;
-  /* CORRIGIDO: overflow hidden garante que a imagem
-     não vaze das bordas do container */
-  overflow: hidden;
-  box-sizing: border-box;
+.gov-password-hero {
+  padding: 17px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 18px;
+  background: var(--gov-password-accent-soft);
+  box-shadow: 0 3px 12px rgba(11, 61, 96, 0.08);
 }
 
-.banner-area img {
-  width: 100%;
-  height: auto;
-  display: block;
-  /* CORRIGIDO: max-width garante contenção mesmo sem o overflow do pai */
-  max-width: 100%;
-}
-
-/* Introdução */
-.texto-introducao {
-  padding: 20px;
-  /* CORRIGIDO: box-sizing evita que padding estoure a largura */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.texto-introducao h3 {
-  color: var(--inss-blue);
-  font-size: 1.3rem;
-  margin: 0 0 10px 0;
-  /* CORRIGIDO: título longo quebra linha em vez de vazar */
-  word-break: break-word;
-}
-
-.texto-introducao p {
-  /* CORRIGIDO: cor hardcoded #475569 não respeitava modo escuro
-     nem alto contraste. var(--text-color) é o equivalente semântico */
-  color: var(--text-color);
-  opacity: 0.75;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin: 0;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-/* Botões de Método */
-.lista-metodos {
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  /* CORRIGIDO: box-sizing evita overflow com padding lateral */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.card-metodo {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  /* CORRIGIDO: background hardcoded white não respeitava modo escuro.
-     var(--card-bg) é o equivalente semântico correto */
-  background-color: var(--card-bg);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
-  text-align: left;
-  /* CORRIGIDO: box-sizing garante que padding e border
-     não somem à largura e vazem o container */
-  box-sizing: border-box;
-}
-
-.card-metodo:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.metodo-icone {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
+.gov-password-back,
+.gov-password-bottom-back {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  margin-right: 15px;
-  /* flex-shrink: 0 já estava correto — ícone não encolhe */
-  flex-shrink: 0;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 11px;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
 }
 
-/* Cores dos Ícones — mantidas pois são identidade visual específica */
-.card-metodo.banco .metodo-icone   { background-color: #dbeafe; color: #2563eb; }
-.card-metodo.celular .metodo-icone { background-color: #dcfce7; color: #16a34a; }
-.card-metodo.facial .metodo-icone  { background-color: #f3e8ff; color: #9333ea; }
-
-.metodo-texto {
-  display: flex;
-  flex-direction: column;
-  /* CORRIGIDO: min-width: 0 permite o texto encolher
-     sem vazar o card quando o título é longo */
-  min-width: 0;
-  flex: 1;
+.gov-password-back {
+  margin: -4px 0 10px -5px;
+  padding: 8px 11px;
+  border: 0;
+  background: transparent;
+  color: var(--gov-password-accent);
 }
 
-.metodo-texto h4 {
-  margin: 0;
-  font-size: 1.1rem;
-  /* CORRIGIDO: cor hardcoded #1e293b não respeitava modo escuro.
-     var(--title-color) é o equivalente semântico */
-  color: var(--title-color);
-  word-break: break-word;
+.gov-password-back:hover {
+  background: rgba(11, 61, 96, 0.08);
 }
 
-.metodo-texto span {
-  font-size: 0.85rem;
-  /* CORRIGIDO: cor hardcoded #64748b não respeitava modo escuro.
-     var(--nav-gray) é o equivalente semântico mais próximo */
-  color: var(--nav-gray);
-  margin-top: 2px;
-  word-break: break-word;
+.gov-password-hero-main {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 13px;
 }
 
-/* Seção de Avisos */
-.secao-avisos {
-  padding: 25px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  /* CORRIGIDO: box-sizing evita overflow com padding lateral */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.aviso-box {
-  padding: 15px;
-  border-radius: 8px;
-  /* CORRIGIDO: box-sizing garante que padding não estoure o aviso */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.aviso-cabecalho {
-  display: flex;
+.gov-password-hero-icon,
+.gov-password-section-heading > span {
+  display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
+  justify-content: center;
+  color: var(--gov-password-accent);
+}
+
+.gov-password-hero-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 3px 10px rgba(11, 61, 96, 0.13);
+}
+
+.gov-password-hero-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.gov-password-eyebrow {
+  margin: 0 0 4px;
+  color: var(--gov-password-accent);
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.gov-password-hero h1 {
+  margin: 0;
+  color: var(--title-color, var(--gov-password-accent));
+  font-size: clamp(1.42rem, 5.8vw, 1.82rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.gov-password-intro {
+  margin: 7px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.52;
+}
+
+.gov-password-critical-note {
+  display: grid;
+  grid-template-columns: 29px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 15px;
+  padding: 15px;
+  border: 2px solid var(--gov-password-warning);
+  border-radius: 15px;
+  background: var(--gov-password-warning-bg);
+  color: #352500;
+}
+
+.gov-password-critical-note > svg {
+  width: 25px;
+  height: 25px;
+  margin-top: 1px;
+  color: var(--gov-password-warning);
+}
+
+.gov-password-critical-note strong,
+.gov-password-lock-note strong {
+  font-weight: 900;
+}
+
+.gov-password-critical-note p {
+  margin: 5px 0 0;
+  line-height: 1.55;
+}
+
+.gov-password-section {
+  margin-top: 24px;
+  padding: 19px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 18px;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 3px 13px rgba(11, 61, 96, 0.055);
+  scroll-margin-top: 92px;
+}
+
+.gov-password-section-heading {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 15px;
+}
+
+.gov-password-section-heading > span {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--gov-password-accent-soft);
+}
+
+.gov-password-section-heading > span svg {
+  width: 22px;
+  height: 22px;
+}
+
+.gov-password-section-heading h2 {
+  margin: 0;
+  color: var(--title-color, var(--gov-password-accent));
+  font-size: clamp(1.18rem, 4.8vw, 1.42rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.gov-password-section-lead {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.gov-password-steps {
+  display: grid;
   gap: 10px;
-  margin-bottom: 8px;
-  /* CORRIGIDO: flex-wrap permite quebrar em telas muito estreitas */
-  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
 }
 
-.aviso-cabecalho h4 {
-  margin: 0;
-  font-size: 1.1rem;
-  word-break: break-word;
+.gov-password-steps li {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--gov-password-accent-soft);
+}
+
+.gov-password-steps li > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gov-password-accent);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.gov-password-steps strong {
+  display: block;
+  color: var(--gov-password-accent-strong);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.gov-password-steps p {
+  margin: 3px 0 0;
+  line-height: 1.5;
+}
+
+.gov-password-security-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.gov-password-security-grid article {
   min-width: 0;
-  flex: 1;
+  padding: 14px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 13px;
+  background: var(--gov-password-accent-soft);
 }
 
-.icone-aviso {
-  font-size: 20px;
-  flex-shrink: 0;
+.gov-password-security-grid article > svg {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 9px;
+  color: var(--gov-password-accent);
 }
 
-.aviso-box p {
+.gov-password-security-grid h3 {
   margin: 0;
-  font-size: 0.95rem;
+  color: var(--gov-password-accent-strong);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.gov-password-security-grid p {
+  margin: 6px 0 0;
+  font-size: 0.93rem;
+  line-height: 1.52;
+}
+
+.gov-password-lock-note {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 13px;
+  border-left: 5px solid var(--gov-password-warning);
+  border-radius: 12px;
+  background: var(--gov-password-warning-bg);
+  color: #352500;
+}
+
+.gov-password-lock-note > svg {
+  width: 21px;
+  height: 21px;
+  margin-top: 2px;
+  color: var(--gov-password-warning);
+}
+
+.gov-password-lock-note p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.gov-password-official-links {
+  display: grid;
+  gap: 10px;
+}
+
+.gov-password-official-links a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  min-height: 66px;
+  padding: 12px 14px;
+  border: 2px solid var(--gov-password-accent);
+  border-radius: 13px;
+  background: var(--card-bg, #ffffff);
+  color: var(--gov-password-accent);
+  text-decoration: none;
+}
+
+.gov-password-official-links a:hover {
+  background: var(--gov-password-accent-soft);
+}
+
+.gov-password-official-links strong,
+.gov-password-official-links small {
+  display: block;
+}
+
+.gov-password-official-links strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.gov-password-official-links small {
+  margin-top: 3px;
+  color: var(--gov-password-muted);
+  font-size: 0.86rem;
   line-height: 1.4;
-  word-break: break-word;
-  overflow-wrap: break-word;
 }
 
-/* Cores específicas dos avisos — mantidas */
-.aviso-box.alerta {
-  background-color: var(--card-bgType2);
-  border: 1px solid var(--border-color);
+.gov-password-official-links a > svg {
+  width: 17px;
+  height: 17px;
 }
-.aviso-box.alerta .aviso-cabecalho { color: var(--text-color); }
-.aviso-box.alerta p { color: var(--text-color); }
 
-.aviso-box.inss {
-  background-color: var(--card-bgType2);
-  border: 1px solid var(--border-color);
+.gov-password-reviewed {
+  margin: 14px 0 0;
+  color: var(--gov-password-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
-.aviso-box.inss .aviso-cabecalho { color: var(--text-color); }
-.aviso-box.inss p { color: var(--text-color); }
+
+.gov-password-bottom-back {
+  width: 100%;
+  margin-top: 24px;
+  padding: 11px 16px;
+  border: 2px solid var(--gov-password-accent);
+  background: var(--gov-password-accent);
+  color: #ffffff;
+}
+
+.gov-password-bottom-back:hover {
+  background: var(--gov-password-accent-strong);
+}
+
+.gov-password-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================
+   MODO ESCURO
+   ========================================================= */
+
+.app-container.dark .gov-password-screen {
+  --gov-password-accent: #8dccf5;
+  --gov-password-accent-strong: #b8ddf6;
+  --gov-password-accent-soft: #172d3b;
+  --gov-password-muted: #c1cbd1;
+  --gov-password-safe: #69dfa0;
+  --gov-password-safe-bg: #153528;
+  --gov-password-warning: #ffd166;
+  --gov-password-warning-bg: #3b3015;
+}
+
+.app-container.dark .gov-password-critical-note,
+.app-container.dark .gov-password-lock-note {
+  color: #fff4cf;
+}
+
+.app-container.dark .gov-password-hero,
+.app-container.dark .gov-password-section {
+  box-shadow: none;
+}
+
+.app-container.dark .gov-password-official-links a {
+  background: #1e1e1e;
+}
+
+/* =========================================================
+   ALTO CONTRASTE
+   ========================================================= */
+
+.app-container.high-contrast .gov-password-screen {
+  --gov-password-accent: #ffff00;
+  --gov-password-accent-strong: #ffff00;
+  --gov-password-accent-soft: #000000;
+  --gov-password-muted: #ffffff;
+  --gov-password-safe: #ffff00;
+  --gov-password-safe-bg: #000000;
+  --gov-password-warning: #ffff00;
+  --gov-password-warning-bg: #000000;
+}
+
+.app-container.high-contrast .gov-password-hero,
+.app-container.high-contrast .gov-password-section,
+.app-container.high-contrast .gov-password-steps li,
+.app-container.high-contrast .gov-password-security-grid article,
+.app-container.high-contrast .gov-password-official-links a {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .gov-password-critical-note,
+.app-container.high-contrast .gov-password-lock-note {
+  border-color: #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .gov-password-steps li > span {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .gov-password-official-links a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.app-container.high-contrast .gov-password-official-links small {
+  color: #ffffff;
+}
+
+.app-container.high-contrast .gov-password-bottom-back {
+  border-color: #ffff00;
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .gov-password-screen :where(button, a):focus-visible {
+  outline-color: #ffffff;
+}
+
+/* =========================================================
+   TEXTO GRANDE E RESPONSIVIDADE
+   ========================================================= */
+
+.app-container.font-grande .gov-password-security-grid {
+  grid-template-columns: 1fr;
+}
+
+.app-container.font-grande .gov-password-official-links a {
+  min-height: 76px;
+}
+
+@media (max-width: 42rem) {
+  .gov-password-security-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .gov-password-hero,
+  .gov-password-section {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .gov-password-hero-main {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .gov-password-hero-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .gov-password-hero-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .gov-password-section-heading {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .gov-password-section-heading > span {
+    width: 40px;
+    height: 40px;
+  }
+
+  .gov-password-critical-note {
+    grid-template-columns: 24px minmax(0, 1fr);
+    padding: 13px;
+  }
+
+  .gov-password-critical-note > svg {
+    width: 21px;
+    height: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gov-password-screen *,
+  .gov-password-screen *::before,
+  .gov-password-screen *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .gov-password-hero,
+  .gov-password-section,
+  .gov-password-critical-note,
+  .gov-password-steps li,
+  .gov-password-security-grid article,
+  .gov-password-lock-note,
+  .gov-password-official-links a,
+  .gov-password-bottom-back {
+    border: 2px solid CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+}

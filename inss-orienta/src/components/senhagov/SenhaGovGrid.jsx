@@ -1,67 +1,72 @@
-import React from 'react';
-import './senhagovgrid.css'; 
+import {
+  FaChevronRight,
+  FaEnvelopeOpenText,
+  FaUniversity,
+  FaUserCheck,
+} from 'react-icons/fa';
+import './senhagovgrid.css';
 
-// ==========================================
-// IMPORTAÇÃO DAS IMAGENS (Ajuste os nomes se necessário)
-// Deixando tudo apontado para a versão clara por enquanto!
-// ==========================================
-// 1. Entrar pelo Banco
-import bancoNormal from '../../assets/senhagov/img_banco.png';
-import bancoEscuro from '../../assets/senhagov/img_banco_dark_mode.png';
-import bancoHC from '../../assets/senhagov/img_banco_alto_contraste.png';
+const RECOVERY_METHODS = [
+  {
+    id: 'facial',
+    route: 'recuperarFacial',
+    icon: FaUserCheck,
+    title: 'Reconhecimento facial',
+    description: 'Confirme sua identidade pelo aplicativo Gov.br usando a câmera.',
+    requirement: 'Use quando essa opção aparecer para sua conta.',
+  },
+  {
+    id: 'bank',
+    route: 'recuperarBanco',
+    icon: FaUniversity,
+    title: 'Banco credenciado',
+    description: 'Faça a confirmação no ambiente seguro de um banco participante.',
+    requirement: 'O procedimento varia conforme a instituição.',
+  },
+  {
+    id: 'message',
+    route: 'recuperarSms',
+    icon: FaEnvelopeOpenText,
+    title: 'E-mail ou SMS',
+    description: 'Receba um código no contato que já está cadastrado na conta.',
+    requirement: 'Você precisa ter acesso ao e-mail ou celular exibido.',
+  },
+];
 
-// 2. SMS ou E-mail
-import smsNormal from '../../assets/senhagov/img_sms.png';
-import smsEscuro from '../../assets/senhagov/img_sms_dark_mode.png';
-import smsHC from '../../assets/senhagov/img_sms_alto_contraste.png';
-
-// 3. Reconhecimento Facial
-import facialNormal from '../../assets/senhagov/img_facial.png';
-import facialEscuro from '../../assets/senhagov/img_facial_dark_mode.png';
-import facialHC from '../../assets/senhagov/img_facial_alto_contraste.png';
-
-export default function SenhaGovGrid({ theme, setActiveTab }) {
-  
-  // Funções inteligentes para decidir qual imagem carregar para cada botão
-  const getImgBanco = () => {
-    if (theme === 'dark') return bancoEscuro;
-    if (theme === 'high-contrast') return bancoHC;
-    return bancoNormal;
-  };
-
-  const getImgSms = () => {
-    if (theme === 'dark') return smsEscuro;
-    if (theme === 'high-contrast') return smsHC;
-    return smsNormal;
-  };
-
-  const getImgFacial = () => {
-    if (theme === 'dark') return facialEscuro;
-    if (theme === 'high-contrast') return facialHC;
-    return facialNormal;
-  };
-
+export default function SenhaGovGrid({ setActiveTab }) {
   return (
-    <div className="lista-categorias">
-      
-      {/* Botão 1: Banco */}
-      <button className="categoria-card" onClick={() => setActiveTab('recuperarBanco')}>
-        <img src={getImgBanco()} alt="Entrar pelo Banco" className="categoria-imagem" />
-        <span>ENTRAR PELO<br/>BANCO</span>
-      </button>
+    <ul className="gov-recovery-methods" aria-label="Formas de recuperar a senha">
+      {RECOVERY_METHODS.map((method) => {
+        const Icon = method.icon;
+        const descriptionId = 'gov-recovery-' + method.id + '-description';
 
-      {/* Botão 2: SMS ou E-mail */}
-      <button className="categoria-card" onClick={() => setActiveTab('recuperarSms')}>
-        <img src={getImgSms()} alt="Por Mensagem SMS" className="categoria-imagem" />
-        <span>POR MENSAGEM<br/>(SMS) OU E-MAIL</span>
-      </button>
+        return (
+          <li key={method.id}>
+            <button
+              type="button"
+              className={'gov-recovery-card gov-recovery-card--' + method.id}
+              aria-describedby={descriptionId}
+              onClick={() => setActiveTab(method.route)}
+            >
+              <span className="gov-recovery-card-icon" aria-hidden="true">
+                <Icon focusable="false" />
+              </span>
 
-      {/* Botão 3: Reconhecimento Facial */}
-      <button className="categoria-card" onClick={() => setActiveTab('recuperarFacial')}>
-        <img src={getImgFacial()} alt="Reconhecimento Facial" className="categoria-imagem" />
-        <span>PELO RECONHECIMENTO<br/>FACIAL (A MAIS RÁPIDA)</span>
-      </button>
+              <span className="gov-recovery-card-copy">
+                <strong>{method.title}</strong>
+                <span id={descriptionId}>{method.description}</span>
+                <small>{method.requirement}</small>
+              </span>
 
-    </div>
+              <FaChevronRight
+                className="gov-recovery-card-arrow"
+                aria-hidden="true"
+                focusable="false"
+              />
+            </button>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
