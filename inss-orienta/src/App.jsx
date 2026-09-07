@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './index.css';
 import SplashScreen from './components/abertura/SplashScreen'; // 👈 Componente importado
 import Header from './components/geral/header/Header';
@@ -23,6 +23,24 @@ import Agendamento from './screens/servicegrid/agendamento/Agendamento';
 import Documentos from './screens/servicegrid/documentos/Documentos';
 import Comunidade from './screens/header/comunidade/Comunidade';
 
+const SYSTEM_THEME_COLORS = {
+  light: {
+    themeColor: '#0b3d60',
+    pageColor: '#ffffff',
+    colorScheme: 'light',
+  },
+  dark: {
+    themeColor: '#121212',
+    pageColor: '#121212',
+    colorScheme: 'dark',
+  },
+  'high-contrast': {
+    themeColor: '#000000',
+    pageColor: '#000000',
+    colorScheme: 'dark',
+  },
+};
+
 export default function App() {
   const [mostrarSplash, setMostrarSplash] = useState(true);
   const [activeTab, setActiveTab] = useState('inicio');
@@ -30,6 +48,17 @@ export default function App() {
   
   // Controle do tamanho da fonte ('normal' ou 'grande')
   const [textSize, setTextSize] = useState('normal');
+
+  useEffect(() => {
+    const themeConfig = SYSTEM_THEME_COLORS[theme] ?? SYSTEM_THEME_COLORS.light;
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+
+    themeColorMeta?.setAttribute('content', themeConfig.themeColor);
+    document.documentElement.style.colorScheme = themeConfig.colorScheme;
+    document.body.style.backgroundColor = themeConfig.pageColor;
+
+    window.INSSOrientaAndroid?.setSystemTheme(theme);
+  }, [theme]);
 
   return (
     // 👇 O Fragment (<>) permite renderizar a Splash e o App lado a lado
