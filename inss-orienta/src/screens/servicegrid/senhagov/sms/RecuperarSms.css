@@ -1,144 +1,646 @@
-.sms-container {
-  /* Blindagem mantida na estrutura atual */
-  position: fixed;
-  top: 60px; 
-  bottom: 70px; 
-  left: 0;
+/* =========================================================
+   RECUPERAÇÃO POR E-MAIL OU SMS — INSS ORIENTA
+   ========================================================= */
+
+.message-recovery-screen {
+  --message-recovery-accent: #0b3d60;
+  --message-recovery-accent-strong: #07324f;
+  --message-recovery-accent-soft: #eaf3f8;
+  --message-recovery-safe: #08783e;
+  --message-recovery-safe-soft: #eaf7f0;
+  --message-recovery-warning: #8a5a00;
+  --message-recovery-warning-bg: #fff7d6;
+  --message-recovery-muted: #56656f;
   width: 100%;
-  background-color: var(--bg-color);
-  z-index: 20; 
-  display: flex;
-  flex-direction: column;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2px 0 24px;
+  color: var(--text-color, #333333);
+  overflow-wrap: anywhere;
 }
 
-.interno-header {
-  display: flex;
+.message-recovery-screen :where(button, a, summary) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.message-recovery-screen :where(button, a, summary):focus-visible {
+  outline: 3px solid #f4a000;
+  outline-offset: 3px;
+}
+
+.message-recovery-hero {
+  padding: 17px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 18px;
+  background: var(--message-recovery-accent-soft);
+  box-shadow: 0 3px 12px rgba(11, 61, 96, 0.08);
+}
+
+.message-recovery-back,
+.message-recovery-bottom-back {
+  display: inline-flex;
   align-items: center;
-  background-color: var(--inss-blue);
-  color: white;
-  padding: 15px;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  flex-shrink: 0; 
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 11px;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
 }
 
-.sms-conteudo {
-  flex: 1; 
-  overflow-y: auto; 
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.message-recovery-back {
+  margin: -4px 0 10px -5px;
+  padding: 8px 11px;
+  border: 0;
+  background: transparent;
+  color: var(--message-recovery-accent);
 }
 
-/* Alerta de Atenção Específico para SMS (Amarelo/Laranja) */
-.sms-container .alerta-sms {
-  background-color: var(--card-bgType2); /* Fundo inteligente */
-  border: 1px dashed var(--warning-border); /* Borda inteligente puxada do index */
-  border-radius: 12px;
-  padding: 15px;
-  display: flex;
+.message-recovery-back:hover {
+  background: rgba(11, 61, 96, 0.08);
+}
+
+.message-recovery-hero-main {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.message-recovery-hero-icon,
+.message-recovery-section-heading > span {
+  display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 15px;
+  justify-content: center;
+  color: var(--message-recovery-accent);
 }
 
-.sms-container .icone-alerta-sms {
-  font-size: 30px;
-  color: var(--warning-icon); /* Ícone laranja/amarelo inteligente */
-  flex-shrink: 0;
+.message-recovery-hero-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 3px 10px rgba(11, 61, 96, 0.13);
 }
 
-.sms-container .alerta-texto h4 {
-  margin: 0 0 5px 0;
-  color: var(--title-color); /* Título inteligente */
-  font-size: 1.05rem;
+.message-recovery-hero-icon svg {
+  width: 27px;
+  height: 27px;
 }
 
-/* 👇 Blindagem do parágrafo do Alerta 👇 */
-.sms-container .alerta-sms .alerta-texto p {
+.message-recovery-eyebrow {
+  margin: 0 0 4px;
+  color: var(--message-recovery-accent);
+  font-size: 0.76rem;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.message-recovery-hero h1 {
   margin: 0;
-  color: var(--text-color) !important; /* Texto forçado para não sumir no escuro */
-  font-size: 0.9rem;
-  line-height: 1.4;
+  color: var(--title-color, var(--message-recovery-accent));
+  font-size: clamp(1.42rem, 5.8vw, 1.82rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
-.sms-container .texto-introdutorio {
-  color: var(--text-color); /* Texto inteligente */
+.message-recovery-intro {
+  margin: 7px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.message-recovery-critical-note {
+  display: grid;
+  grid-template-columns: 29px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 15px;
+  padding: 15px;
+  border: 2px solid var(--message-recovery-warning);
+  border-radius: 15px;
+  background: var(--message-recovery-warning-bg);
+  color: #352500;
+}
+
+.message-recovery-critical-note > svg {
+  width: 25px;
+  height: 25px;
+  margin-top: 1px;
+  color: var(--message-recovery-warning);
+}
+
+.message-recovery-critical-note strong {
+  font-weight: 900;
+}
+
+.message-recovery-critical-note p {
+  margin: 5px 0 0;
+  line-height: 1.55;
+}
+
+.message-recovery-section {
+  margin-top: 24px;
+  padding: 19px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 18px;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 3px 13px rgba(11, 61, 96, 0.055);
+  scroll-margin-top: 92px;
+}
+
+.message-recovery-section-heading {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 15px;
+}
+
+.message-recovery-section-heading > span {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--message-recovery-accent-soft);
+}
+
+.message-recovery-section-heading > span svg {
+  width: 22px;
+  height: 22px;
+}
+
+.message-recovery-section-heading h2 {
+  margin: 0;
+  color: var(--title-color, var(--message-recovery-accent));
+  font-size: clamp(1.18rem, 4.8vw, 1.42rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.message-recovery-section-lead {
+  margin: 0 0 16px;
   font-size: 1rem;
-  margin: 0;
+  line-height: 1.6;
 }
 
-/* Estilo do Passo a Passo */
-.passo-a-passo {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.message-recovery-checklist {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.message-recovery-checklist li {
+  display: grid;
+  grid-template-columns: 23px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: var(--message-recovery-safe-soft);
+  line-height: 1.52;
+}
+
+.message-recovery-checklist svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--message-recovery-safe);
+}
+
+.message-recovery-steps {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.message-recovery-steps > li {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 12px;
   position: relative;
 }
 
-.sms-container .passo-a-passo::before {
+.message-recovery-steps > li:not(:last-child)::after {
   content: '';
   position: absolute;
+  top: 43px;
+  bottom: -14px;
   left: 20px;
-  top: 10px;
-  bottom: 10px;
   width: 2px;
-  background-color: var(--border-color); /* Linha inteligente */
+  background: var(--border-color, #e0e0e0);
+}
+
+.message-recovery-step-number {
   z-index: 1;
-}
-
-.passo-card {
-  display: flex;
-  gap: 15px;
-  z-index: 2; 
-}
-
-.sms-container .passo-numero {
-  width: 42px;
-  height: 42px;
-  background-color: var(--success-color); /* Fundo verde adaptável do index */
-  color: var(--bg-color); /* 👈 Truque de mestre: inverte a cor do texto conforme o fundo! */
-  border-radius: 50%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-  border: 4px solid var(--bg-color); 
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--card-bg, #ffffff);
+  border-radius: 50%;
+  background: var(--message-recovery-accent);
+  color: #ffffff;
+  font-size: 1.04rem;
+  font-weight: 900;
 }
 
-.sms-container .passo-detalhe {
-  background-color: var(--card-bgType2); /* Fundo inteligente */
-  border: 1px solid var(--border-color); /* Borda inteligente */
-  border-radius: 12px;
-  padding: 15px;
-  flex: 1;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.message-recovery-steps > li > div {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 13px;
+  background: var(--message-recovery-accent-soft);
 }
 
-.passo-header {
-  display: flex;
+.message-recovery-step-title {
+  display: grid;
+  grid-template-columns: 23px minmax(0, 1fr);
   align-items: center;
+  gap: 9px;
+}
+
+.message-recovery-step-title svg {
+  width: 21px;
+  height: 21px;
+  color: var(--message-recovery-accent);
+}
+
+.message-recovery-step-title h3 {
+  margin: 0;
+  color: var(--message-recovery-accent-strong);
+  font-size: 1.06rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.message-recovery-steps p {
+  margin: 7px 0 0;
+  line-height: 1.58;
+}
+
+.message-recovery-steps strong,
+.message-recovery-problem-list strong {
+  font-weight: 900;
+}
+
+.message-recovery-path-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.message-recovery-path-card {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-top: 5px solid var(--message-recovery-accent);
+  border-radius: 14px;
+  background: var(--message-recovery-accent-soft);
+}
+
+.message-recovery-path-card > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 43px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+  background: var(--card-bg, #ffffff);
+  color: var(--message-recovery-accent);
+}
+
+.message-recovery-path-card > span svg {
+  width: 21px;
+  height: 21px;
+}
+
+.message-recovery-path-card h3,
+.message-recovery-problem-list h3 {
+  margin: 0;
+  color: var(--message-recovery-accent-strong);
+  font-size: 1.03rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.message-recovery-path-card p {
+  margin: 7px 0 0;
+  line-height: 1.53;
+}
+
+.message-recovery-path-card--sms {
+  border-top-color: var(--message-recovery-safe);
+  background: var(--message-recovery-safe-soft);
+}
+
+.message-recovery-path-card--sms > span {
+  color: var(--message-recovery-safe);
+}
+
+.message-recovery-problem-list {
+  display: grid;
   gap: 10px;
-  margin-bottom: 8px;
 }
 
-.passo-icone {
-  color: var(--success-color); /* Ícone verde adaptável */
-  font-size: 18px;
+.message-recovery-problem-list article {
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 13px;
+  background: var(--message-recovery-warning-bg);
 }
 
-.sms-container .passo-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--title-color); /* Título inteligente */
+.message-recovery-problem-list article > svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  color: var(--message-recovery-warning);
 }
 
-/* 👇 Blindagem do parágrafo do Passo a Passo 👇 */
-.sms-container .passo-card .passo-detalhe p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--text-color) !important; /* Texto forçado */
+.message-recovery-problem-list p {
+  margin: 5px 0 0;
+  line-height: 1.55;
+}
+
+.message-recovery-official-links {
+  display: grid;
+  gap: 10px;
+}
+
+.message-recovery-official-links a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  padding: 12px 14px;
+  border: 2px solid var(--message-recovery-accent);
+  border-radius: 13px;
+  background: var(--card-bg, #ffffff);
+  color: var(--message-recovery-accent);
+  text-decoration: none;
+}
+
+.message-recovery-official-links a:hover {
+  background: var(--message-recovery-accent-soft);
+}
+
+.message-recovery-official-links strong,
+.message-recovery-official-links small {
+  display: block;
+}
+
+.message-recovery-official-links strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.message-recovery-official-links small {
+  margin-top: 3px;
+  color: var(--message-recovery-muted);
+  font-size: 0.86rem;
   line-height: 1.4;
+}
+
+.message-recovery-official-links a > svg {
+  width: 17px;
+  height: 17px;
+}
+
+.message-recovery-reviewed {
+  margin: 14px 0 0;
+  color: var(--message-recovery-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.message-recovery-bottom-back {
+  width: 100%;
+  margin-top: 24px;
+  padding: 11px 16px;
+  border: 2px solid var(--message-recovery-accent);
+  background: var(--message-recovery-accent);
+  color: #ffffff;
+}
+
+.message-recovery-bottom-back:hover {
+  background: var(--message-recovery-accent-strong);
+}
+
+.message-recovery-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================
+   MODO ESCURO
+   ========================= */
+
+.app-container.dark .message-recovery-screen {
+  --message-recovery-accent: #8dc7f0;
+  --message-recovery-accent-strong: #d2ebfb;
+  --message-recovery-accent-soft: #192b38;
+  --message-recovery-safe: #83e4ab;
+  --message-recovery-safe-soft: #173527;
+  --message-recovery-warning: #ffd166;
+  --message-recovery-warning-bg: #382f16;
+  --message-recovery-muted: #c3cbd0;
+}
+
+.app-container.dark .message-recovery-hero,
+.app-container.dark .message-recovery-section {
+  box-shadow: none;
+}
+
+.app-container.dark .message-recovery-critical-note,
+.app-container.dark .message-recovery-problem-list article {
+  color: #ffffff;
+}
+
+.app-container.dark .message-recovery-back:hover {
+  background: rgba(141, 199, 240, 0.12);
+}
+
+/* =========================
+   ALTO CONTRASTE
+   ========================= */
+
+.app-container.high-contrast .message-recovery-screen {
+  --message-recovery-accent: #ffff00;
+  --message-recovery-accent-strong: #ffff00;
+  --message-recovery-accent-soft: #000000;
+  --message-recovery-safe: #ffff00;
+  --message-recovery-safe-soft: #000000;
+  --message-recovery-warning: #ffff00;
+  --message-recovery-warning-bg: #000000;
+  --message-recovery-muted: #ffffff;
+}
+
+.app-container.high-contrast .message-recovery-hero,
+.app-container.high-contrast .message-recovery-section,
+.app-container.high-contrast .message-recovery-critical-note,
+.app-container.high-contrast .message-recovery-checklist li,
+.app-container.high-contrast .message-recovery-steps > li > div,
+.app-container.high-contrast .message-recovery-path-card,
+.app-container.high-contrast .message-recovery-problem-list article,
+.app-container.high-contrast .message-recovery-official-links a {
+  border-color: #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .message-recovery-hero-icon,
+.app-container.high-contrast .message-recovery-section-heading > span,
+.app-container.high-contrast .message-recovery-path-card > span {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .message-recovery-step-number {
+  border-color: #ffff00;
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .message-recovery-steps > li:not(:last-child)::after {
+  background: #ffff00;
+}
+
+.app-container.high-contrast .message-recovery-official-links small,
+.app-container.high-contrast .message-recovery-reviewed {
+  color: #ffffff;
+}
+
+.app-container.high-contrast .message-recovery-bottom-back {
+  border-color: #ffff00;
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .message-recovery-screen :where(button, a):focus-visible {
+  outline-color: #ffffff;
+}
+
+/* =========================
+   TEXTO GRANDE E TELAS MENORES
+   ========================= */
+
+.app-container.font-grande .message-recovery-path-grid {
+  grid-template-columns: 1fr;
+}
+
+.app-container.font-grande .message-recovery-official-links a {
+  min-height: 76px;
+}
+
+@media (max-width: 31rem) {
+  .message-recovery-path-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .message-recovery-hero,
+  .message-recovery-section {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .message-recovery-hero-main {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  .message-recovery-hero-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .message-recovery-steps > li {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .message-recovery-step-number {
+    width: 38px;
+    height: 38px;
+  }
+
+  .message-recovery-steps > li:not(:last-child)::after {
+    top: 39px;
+    left: 18px;
+  }
+
+  .message-recovery-steps > li > div {
+    padding: 12px;
+  }
+
+  .message-recovery-section-heading {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .message-recovery-section-heading > span {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-recovery-screen,
+  .message-recovery-screen *,
+  .message-recovery-screen *::before,
+  .message-recovery-screen *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .message-recovery-hero,
+  .message-recovery-section,
+  .message-recovery-critical-note,
+  .message-recovery-checklist li,
+  .message-recovery-steps > li > div,
+  .message-recovery-path-card,
+  .message-recovery-problem-list article,
+  .message-recovery-official-links a,
+  .message-recovery-bottom-back {
+    border: 2px solid CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .message-recovery-step-number {
+    border: 2px solid CanvasText;
+  }
 }

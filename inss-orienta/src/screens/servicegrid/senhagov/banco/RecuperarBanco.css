@@ -1,231 +1,667 @@
-.banco-container {
-  position: fixed;
-  top: 60px;
-  /* CORRIGIDO: bottom fixo não respeita safe area do Android gestual */
-  bottom: calc(70px + env(safe-area-inset-bottom, 0px));
-  left: 0;
+/* =========================================================
+   RECUPERAÇÃO PELO BANCO — INSS ORIENTA
+   ========================================================= */
+
+.bank-recovery-screen {
+  --bank-recovery-accent: #0b3d60;
+  --bank-recovery-accent-strong: #07324f;
+  --bank-recovery-accent-soft: #eaf3f8;
+  --bank-recovery-safe: #08783e;
+  --bank-recovery-safe-soft: #eaf7f0;
+  --bank-recovery-warning: #8a5a00;
+  --bank-recovery-warning-bg: #fff7d6;
+  --bank-recovery-muted: #56656f;
   width: 100%;
-  background-color: var(--bg-color);
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  /* CORRIGIDO: overflow hidden evita vazamento lateral */
-  overflow: hidden;
-  box-sizing: border-box;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2px 0 24px;
+  color: var(--text-color, #333333);
+  overflow-wrap: anywhere;
 }
 
-.interno-header {
-  display: flex;
+.bank-recovery-screen :where(button, a) {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.bank-recovery-screen :where(button, a):focus-visible {
+  outline: 3px solid #f4a000;
+  outline-offset: 3px;
+}
+
+.bank-recovery-hero {
+  padding: 17px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 18px;
+  background: var(--bank-recovery-accent-soft);
+  box-shadow: 0 3px 12px rgba(11, 61, 96, 0.08);
+}
+
+.bank-recovery-back,
+.bank-recovery-bottom-back {
+  display: inline-flex;
   align-items: center;
-  background-color: var(--inss-blue);
-  color: white;
-  padding: 5px 15px;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  flex-shrink: 0;
-  /* CORRIGIDO: box-sizing e width contêm o header */
-  box-sizing: border-box;
-  width: 100%;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 11px;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
 }
 
-.banco-conteudo {
-  flex: 1;
-  /* CORRIGIDO: overflow-y: auto correto aqui pois pai é position: fixed.
-     overflow-x: hidden evita vazamento lateral */
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  /* CORRIGIDO: margin: 10px causava overflow horizontal no Android.
-     Trocado por padding que respeita box-sizing */
-  padding: 10px;
-  /* CORRIGIDO: !important removido — desnecessário com box-sizing correto.
-     Valor reduzido pois o bottom do container já compensa o rodapé */
-  padding-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-sizing: border-box;
-  width: 100%;
+.bank-recovery-back {
+  margin: -4px 0 10px -5px;
+  padding: 8px 11px;
+  border: 0;
+  background: transparent;
+  color: var(--bank-recovery-accent);
 }
 
-/* Alerta de Segurança */
-.alerta-banco {
-  background-color: var(--card-bgType2);
-  border: 1px solid var(--success-color);
-  border-radius: 12px;
-  padding: 15px;
-  display: flex;
+.bank-recovery-back:hover {
+  background: rgba(11, 61, 96, 0.08);
+}
+
+.bank-recovery-hero-main {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.bank-recovery-hero-icon,
+.bank-recovery-section-heading > span {
+  display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 15px;
-  /* CORRIGIDO: box-sizing evita que border e padding estourem */
-  box-sizing: border-box;
-  width: 100%;
-  /* CORRIGIDO: flex-wrap permite quebrar em telas muito estreitas */
-  flex-wrap: wrap;
+  justify-content: center;
+  color: var(--bank-recovery-accent);
 }
 
-.banco-container .icone-alerta-banco {
-  font-size: 30px;
-  color: var(--success-color);
-  flex-shrink: 0;
+.bank-recovery-hero-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 3px 10px rgba(11, 61, 96, 0.13);
 }
 
-/* CORRIGIDO: alerta-texto precisa de flex: 1 e min-width: 0
-   para não vazar o container quando o texto é longo */
-.alerta-texto {
-  flex: 1;
-  min-width: 0;
+.bank-recovery-hero-icon svg {
+  width: 28px;
+  height: 28px;
 }
 
-.banco-container .alerta-texto h4 {
-  margin: 0 0 5px 0;
-  color: var(--title-color);
-  font-size: 1.05rem;
-  word-break: break-word;
+.bank-recovery-eyebrow {
+  margin: 0 0 4px;
+  color: var(--bank-recovery-accent);
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
 }
 
-.banco-container .alerta-banco .alerta-texto p {
+.bank-recovery-hero h1 {
   margin: 0;
-  color: var(--text-color) !important;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  color: var(--title-color, var(--bank-recovery-accent));
+  font-size: clamp(1.42rem, 5.8vw, 1.82rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
-.banco-container .texto-introdutorio {
-  color: var(--text-color);
+.bank-recovery-intro {
+  margin: 7px 0 0;
   font-size: 1rem;
-  margin: 0;
-  word-break: break-word;
+  line-height: 1.55;
 }
 
-/* Passo a Passo */
-.passo-a-passo {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.bank-recovery-critical-note {
+  display: grid;
+  grid-template-columns: 29px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 15px;
+  padding: 15px;
+  border: 2px solid var(--bank-recovery-safe);
+  border-radius: 15px;
+  background: var(--bank-recovery-safe-soft);
+  color: #123421;
+}
+
+.bank-recovery-critical-note > svg {
+  width: 25px;
+  height: 25px;
+  margin-top: 1px;
+  color: var(--bank-recovery-safe);
+}
+
+.bank-recovery-critical-note strong,
+.bank-recovery-finish-note strong,
+.bank-recovery-problem-list strong {
+  font-weight: 900;
+}
+
+.bank-recovery-critical-note p {
+  margin: 5px 0 0;
+  line-height: 1.55;
+}
+
+.bank-recovery-section {
+  margin-top: 24px;
+  padding: 19px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 18px;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 3px 13px rgba(11, 61, 96, 0.055);
+  scroll-margin-top: 92px;
+}
+
+.bank-recovery-section-heading {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 15px;
+}
+
+.bank-recovery-section-heading > span {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--bank-recovery-accent-soft);
+}
+
+.bank-recovery-section-heading > span svg {
+  width: 22px;
+  height: 22px;
+}
+
+.bank-recovery-section-heading h2 {
+  margin: 0;
+  color: var(--title-color, var(--bank-recovery-accent));
+  font-size: clamp(1.18rem, 4.8vw, 1.42rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.bank-recovery-section-lead {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.bank-recovery-checklist {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bank-recovery-checklist li {
+  display: grid;
+  grid-template-columns: 23px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: var(--bank-recovery-safe-soft);
+  line-height: 1.52;
+}
+
+.bank-recovery-checklist svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--bank-recovery-safe);
+}
+
+.bank-recovery-steps {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bank-recovery-steps > li {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 12px;
   position: relative;
 }
 
-/* CORRIGIDO: left: 20px é metade do .passo-numero (42px / 2 = 21px)
-   menos metade da linha (2px / 2 = 1px) = 20px — valor correto mantido.
-   Adicionado z-index: 0 explícito para garantir ordem de empilhamento */
-.passo-a-passo::before {
+.bank-recovery-steps > li:not(:last-child)::after {
   content: '';
   position: absolute;
+  top: 43px;
+  bottom: -14px;
   left: 20px;
-  top: 10px;
-  bottom: 10px;
   width: 2px;
-  background-color: var(--border-color);
-  z-index: 0;
+  background: var(--border-color, #e0e0e0);
 }
 
-.passo-card {
-  display: flex;
-  gap: 15px;
-  z-index: 2;
-  /* CORRIGIDO: align-items: flex-start evita que o número
-     se estique verticalmente quando o texto do passo é longo */
-  align-items: flex-start;
-}
-
-.banco-container .passo-numero {
-  width: 42px;
-  height: 42px;
-  background-color: var(--success-color);
-  color: var(--bg-color);
-  border-radius: 50%;
-  display: flex;
+.bank-recovery-step-number {
+  z-index: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-  border: 4px solid var(--bg-color);
-  /* CORRIGIDO: box-sizing garante que border não some ao tamanho */
-  box-sizing: border-box;
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--card-bg, #ffffff);
+  border-radius: 50%;
+  background: var(--bank-recovery-accent);
+  color: #ffffff;
+  font-size: 1.04rem;
+  font-weight: 900;
 }
 
-.banco-container .passo-detalhe {
-  background-color: var(--card-bgType2);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 15px;
-  flex: 1;
-  /* CORRIGIDO: min-width: 0 evita que o detalhe vaze o card
-     quando o texto é longo */
+.bank-recovery-steps > li > div {
   min-width: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 13px;
+  background: var(--bank-recovery-accent-soft);
 }
 
-.passo-header {
-  display: flex;
+.bank-recovery-step-title {
+  display: grid;
+  grid-template-columns: 23px minmax(0, 1fr);
   align-items: center;
+  gap: 9px;
+}
+
+.bank-recovery-step-title svg {
+  width: 21px;
+  height: 21px;
+  color: var(--bank-recovery-accent);
+}
+
+.bank-recovery-step-title h3,
+.bank-recovery-explanation-card h3,
+.bank-recovery-problem-list h3 {
+  margin: 0;
+  color: var(--bank-recovery-accent-strong);
+  font-size: 1.06rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.bank-recovery-steps p {
+  margin: 7px 0 0;
+  line-height: 1.58;
+}
+
+.bank-recovery-steps strong {
+  font-weight: 900;
+}
+
+.bank-recovery-finish-note {
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr);
+  align-items: flex-start;
   gap: 10px;
-  margin-bottom: 8px;
-  /* CORRIGIDO: flex-wrap permite quebrar em telas estreitas */
-  flex-wrap: wrap;
-}
-
-.passo-icone {
-  color: var(--title-color);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.banco-container .passo-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--title-color);
-  word-break: break-word;
-  min-width: 0;
-  flex: 1;
-}
-
-.banco-container .passo-card .passo-detalhe p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--text-color) !important;
-  line-height: 1.4;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-/* Box de Sucesso Final */
-.sucesso-box {
-  background-color: var(--card-bgType2);
-  border: 1px dashed var(--inss-blue);
+  margin-top: 16px;
+  padding: 13px;
+  border-left: 5px solid var(--bank-recovery-safe);
   border-radius: 12px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-top: 10px;
-  /* CORRIGIDO: box-sizing e width contêm o box */
-  box-sizing: border-box;
-  width: 100%;
-  /* CORRIGIDO: flex-wrap permite quebrar em telas estreitas */
-  flex-wrap: wrap;
+  background: var(--bank-recovery-safe-soft);
+  color: #123421;
 }
 
-.icone-sucesso {
-  color: var(--title-color);
-  font-size: 24px;
-  flex-shrink: 0;
+.bank-recovery-finish-note > svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  color: var(--bank-recovery-safe);
 }
 
-.banco-container .sucesso-box p {
+.bank-recovery-finish-note p {
   margin: 0;
-  color: var(--text-color) !important;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  /* CORRIGIDO: flex: 1 e min-width: 0 permitem o texto
-     ocupar o espaço restante sem vazar */
-  flex: 1;
+  line-height: 1.55;
+}
+
+.bank-recovery-explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.bank-recovery-explanation-card {
   min-width: 0;
+  padding: 15px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-top: 5px solid var(--bank-recovery-safe);
+  border-radius: 14px;
+  background: var(--bank-recovery-safe-soft);
+}
+
+.bank-recovery-explanation-card > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 43px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+  background: var(--card-bg, #ffffff);
+  color: var(--bank-recovery-safe);
+}
+
+.bank-recovery-explanation-card > span svg {
+  width: 21px;
+  height: 21px;
+}
+
+.bank-recovery-explanation-card p {
+  margin: 7px 0 0;
+  line-height: 1.53;
+}
+
+.bank-recovery-explanation-card--warning {
+  border-top-color: var(--bank-recovery-warning);
+  background: var(--bank-recovery-warning-bg);
+}
+
+.bank-recovery-explanation-card--warning > span {
+  color: var(--bank-recovery-warning);
+}
+
+.bank-recovery-problem-list {
+  display: grid;
+  gap: 10px;
+}
+
+.bank-recovery-problem-list article {
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 13px;
+  background: var(--bank-recovery-accent-soft);
+}
+
+.bank-recovery-problem-list article > svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  color: var(--bank-recovery-accent);
+}
+
+.bank-recovery-problem-list p {
+  margin: 5px 0 0;
+  line-height: 1.55;
+}
+
+.bank-recovery-official-links {
+  display: grid;
+  gap: 10px;
+}
+
+.bank-recovery-official-links a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  padding: 12px 14px;
+  border: 2px solid var(--bank-recovery-accent);
+  border-radius: 13px;
+  background: var(--card-bg, #ffffff);
+  color: var(--bank-recovery-accent);
+  text-decoration: none;
+}
+
+.bank-recovery-official-links a:hover {
+  background: var(--bank-recovery-accent-soft);
+}
+
+.bank-recovery-official-links strong,
+.bank-recovery-official-links small {
+  display: block;
+}
+
+.bank-recovery-official-links strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.bank-recovery-official-links small {
+  margin-top: 3px;
+  color: var(--bank-recovery-muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.bank-recovery-official-links a > svg {
+  width: 17px;
+  height: 17px;
+}
+
+.bank-recovery-reviewed {
+  margin: 14px 0 0;
+  color: var(--bank-recovery-muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.bank-recovery-bottom-back {
+  width: 100%;
+  margin-top: 24px;
+  padding: 11px 16px;
+  border: 2px solid var(--bank-recovery-accent);
+  background: var(--bank-recovery-accent);
+  color: #ffffff;
+}
+
+.bank-recovery-bottom-back:hover {
+  background: var(--bank-recovery-accent-strong);
+}
+
+.bank-recovery-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================
+   MODO ESCURO
+   ========================= */
+
+.app-container.dark .bank-recovery-screen {
+  --bank-recovery-accent: #8dc7f0;
+  --bank-recovery-accent-strong: #d2ebfb;
+  --bank-recovery-accent-soft: #192b38;
+  --bank-recovery-safe: #83e4ab;
+  --bank-recovery-safe-soft: #173527;
+  --bank-recovery-warning: #ffd166;
+  --bank-recovery-warning-bg: #382f16;
+  --bank-recovery-muted: #c3cbd0;
+}
+
+.app-container.dark .bank-recovery-hero,
+.app-container.dark .bank-recovery-section {
+  box-shadow: none;
+}
+
+.app-container.dark .bank-recovery-critical-note,
+.app-container.dark .bank-recovery-finish-note {
+  color: #ffffff;
+}
+
+.app-container.dark .bank-recovery-back:hover {
+  background: rgba(141, 199, 240, 0.12);
+}
+
+/* =========================
+   ALTO CONTRASTE
+   ========================= */
+
+.app-container.high-contrast .bank-recovery-screen {
+  --bank-recovery-accent: #ffff00;
+  --bank-recovery-accent-strong: #ffff00;
+  --bank-recovery-accent-soft: #000000;
+  --bank-recovery-safe: #ffff00;
+  --bank-recovery-safe-soft: #000000;
+  --bank-recovery-warning: #ffff00;
+  --bank-recovery-warning-bg: #000000;
+  --bank-recovery-muted: #ffffff;
+}
+
+.app-container.high-contrast .bank-recovery-hero,
+.app-container.high-contrast .bank-recovery-section,
+.app-container.high-contrast .bank-recovery-critical-note,
+.app-container.high-contrast .bank-recovery-checklist li,
+.app-container.high-contrast .bank-recovery-steps > li > div,
+.app-container.high-contrast .bank-recovery-finish-note,
+.app-container.high-contrast .bank-recovery-explanation-card,
+.app-container.high-contrast .bank-recovery-problem-list article,
+.app-container.high-contrast .bank-recovery-official-links a {
+  border-color: #ffff00;
+  background: #000000;
+  color: #ffff00;
+  box-shadow: none;
+}
+
+.app-container.high-contrast .bank-recovery-hero-icon,
+.app-container.high-contrast .bank-recovery-section-heading > span,
+.app-container.high-contrast .bank-recovery-explanation-card > span {
+  border: 2px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+.app-container.high-contrast .bank-recovery-step-number {
+  border-color: #ffff00;
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .bank-recovery-steps > li:not(:last-child)::after {
+  background: #ffff00;
+}
+
+.app-container.high-contrast .bank-recovery-official-links small,
+.app-container.high-contrast .bank-recovery-reviewed {
+  color: #ffffff;
+}
+
+.app-container.high-contrast .bank-recovery-bottom-back {
+  border-color: #ffff00;
+  background: #ffff00;
+  color: #000000;
+}
+
+.app-container.high-contrast .bank-recovery-screen :where(button, a):focus-visible {
+  outline-color: #ffffff;
+}
+
+/* =========================
+   TEXTO GRANDE E TELAS MENORES
+   ========================= */
+
+.app-container.font-grande .bank-recovery-explanation-grid {
+  grid-template-columns: 1fr;
+}
+
+.app-container.font-grande .bank-recovery-official-links a {
+  min-height: 76px;
+}
+
+@media (max-width: 31rem) {
+  .bank-recovery-explanation-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .bank-recovery-hero,
+  .bank-recovery-section {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .bank-recovery-hero-main {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  .bank-recovery-hero-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .bank-recovery-steps > li {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .bank-recovery-step-number {
+    width: 38px;
+    height: 38px;
+  }
+
+  .bank-recovery-steps > li:not(:last-child)::after {
+    top: 39px;
+    left: 18px;
+  }
+
+  .bank-recovery-steps > li > div {
+    padding: 12px;
+  }
+
+  .bank-recovery-section-heading {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .bank-recovery-section-heading > span {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bank-recovery-screen,
+  .bank-recovery-screen *,
+  .bank-recovery-screen *::before,
+  .bank-recovery-screen *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .bank-recovery-hero,
+  .bank-recovery-section,
+  .bank-recovery-critical-note,
+  .bank-recovery-checklist li,
+  .bank-recovery-steps > li > div,
+  .bank-recovery-finish-note,
+  .bank-recovery-explanation-card,
+  .bank-recovery-problem-list article,
+  .bank-recovery-official-links a,
+  .bank-recovery-bottom-back {
+    border: 2px solid CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .bank-recovery-step-number {
+    border: 2px solid CanvasText;
+  }
 }
