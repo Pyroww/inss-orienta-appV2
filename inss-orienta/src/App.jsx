@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './index.css';
 import SplashScreen from './components/abertura/SplashScreen'; // 👈 Componente importado
 import Header from './components/geral/header/Header';
@@ -41,13 +41,125 @@ const SYSTEM_THEME_COLORS = {
   },
 };
 
+const DEFAULT_TAB = 'inicio';
+const HISTORY_TAB_KEY = 'inssOrientaActiveTab';
+const VALID_TABS = new Set([
+  'inicio',
+  'assistente',
+  'comunidade',
+  'acessibilidade',
+  'ajuda',
+  'termos',
+  'privacidade',
+  'elegibilidade',
+  'aposentadoriaGeral',
+  'auxilios',
+  'assistenciais',
+  'senhaGov',
+  'recuperarBanco',
+  'recuperarSms',
+  'recuperarFacial',
+  'provaVida',
+  'calendario',
+  'agendamento',
+  'documentos',
+]);
+
+const obterEstadoDoHistorico = () => {
+  const estadoAtual = window.history.state;
+  return estadoAtual && typeof estadoAtual === 'object' ? estadoAtual : {};
+};
+
+const obterTelaDoHistorico = (estado, telaAlternativa = DEFAULT_TAB) => {
+  const tela = estado?.[HISTORY_TAB_KEY];
+  return VALID_TABS.has(tela) ? tela : telaAlternativa;
+};
+
 export default function App() {
   const [mostrarSplash, setMostrarSplash] = useState(true);
-  const [activeTab, setActiveTab] = useState('inicio');
+  const [activeTab, setActiveTabState] = useState(() =>
+    obterTelaDoHistorico(window.history.state),
+  );
+  const activeTabRef = useRef(activeTab);
   const [theme, setTheme] = useState('light');
   
   // Controle do tamanho da fonte ('normal' ou 'grande')
   const [textSize, setTextSize] = useState('normal');
+
+  const setActiveTab = useCallback((proximaTela) => {
+    const telaAtual = activeTabRef.current;
+    const telaResolvida = typeof proximaTela === 'function'
+      ? proximaTela(telaAtual)
+      : proximaTela;
+
+    if (!VALID_TABS.has(telaResolvida) || telaResolvida === telaAtual) return;
+
+    window.history.pushState(
+      {
+        ...obterEstadoDoHistorico(),
+        [HISTORY_TAB_KEY]: telaResolvida,
+      },
+      '',
+    );
+
+    activeTabRef.current = telaResolvida;
+    setActiveTabState(telaResolvida);
+  }, []);
+
+  useEffect(() => {
+    const telaInicial = obterTelaDoHistorico(
+      window.history.state,
+      activeTabRef.current,
+    );
+    const restauracaoAnterior = window.history.scrollRestoration;
+
+    activeTabRef.current = telaInicial;
+    setActiveTabState(telaInicial);
+    window.history.scrollRestoration = 'manual';
+    window.history.replaceState(
+      {
+        ...obterEstadoDoHistorico(),
+        [HISTORY_TAB_KEY]: telaInicial,
+      },
+      '',
+    );
+
+    const lidarComVoltarOuAvancar = (evento) => {
+      const telaAnterior = obterTelaDoHistorico(
+        evento.state,
+        activeTabRef.current,
+      );
+
+      activeTabRef.current = telaAnterior;
+      setActiveTabState(telaAnterior);
+    };
+
+    window.addEventListener('popstate', lidarComVoltarOuAvancar);
+
+    return () => {
+      window.removeEventListener('popstate', lidarComVoltarOuAvancar);
+      window.history.scrollRestoration = restauracaoAnterior;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mostrarSplash) return undefined;
+
+    const quadro = window.requestAnimationFrame(() => {
+      const conteudoPrincipal = document.getElementById('conteudo-principal');
+      const container = document.querySelector('.app-container');
+
+      if (container instanceof HTMLElement) {
+        container.scrollTo({ top: 0, behavior: 'auto' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+
+      conteudoPrincipal?.focus({ preventScroll: true });
+    });
+
+    return () => window.cancelAnimationFrame(quadro);
+  }, [activeTab, mostrarSplash]);
 
   useEffect(() => {
     const themeConfig = SYSTEM_THEME_COLORS[theme] ?? SYSTEM_THEME_COLORS.light;
